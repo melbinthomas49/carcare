@@ -1,75 +1,140 @@
-# CarCare+ — Marketing Website
+# CarCare+ — Marketing Site + User/Admin Panel (Firebase)
 
-A responsive, dynamic corporate landing page for **CarCare+**, an AI-powered car maintenance companion. Built with plain HTML, CSS, and JavaScript — no build step, no dependencies, ready to host on GitHub Pages.
+A responsive corporate landing page for **CarCare+**, now with real accounts and a real
+database: users can sign up, add vehicles, and log service history; admins get a panel
+to manage all users, vehicles, and service records. Built with plain HTML/CSS/JS +
+**Firebase** (Auth + Firestore) — no build step, deployable straight to GitHub Pages.
 
-## ✨ What's inside
+## 📁 What's in this folder
 
-- **Live animated dashboard mockup** in the hero — an SVG health gauge that fills in on scroll, a typewriter-style AI insight feed, and an activity log.
-- **Scroll-triggered reveals** for every section using `IntersectionObserver`.
-- **Animated stat counters** (users, repairs analyzed, workshops, satisfaction).
-- **Sticky header** that gains a shadow/blur on scroll, with an active-link indicator and a mobile hamburger menu.
-- **Working front-end form validation** on the contact/signup form (no backend — swap in your own endpoint when ready).
-- Fully responsive down to small mobile, visible keyboard focus states, and `prefers-reduced-motion` support.
+| File | Purpose |
+|---|---|
+| `index.html` | All markup: marketing site, auth modal, user dashboard, admin panel |
+| `css/style.css` | All styles |
+| `js/script.js` | Marketing-site interactivity (nav, hero gauge, counters, reveals) |
+| `js/firebase-app.js` | Auth + Firestore logic (signup/login, vehicles, service records, admin panel) |
+| `firestore.rules` | Security rules to paste into your Firebase project |
 
-## 📁 Project structure
+A merged **single-file** version (`index.html` with CSS/JS inlined, Firebase CDN links
+kept external) is also available if you asked for that — same behavior, one file.
+
+## 🔥 Firebase setup (required — do this first)
+
+The app won't work until you connect it to your own free Firebase project.
+
+1. Go to [console.firebase.google.com](https://console.firebase.google.com) → **Add project** → name it (e.g. `carcare-plus`) → finish the wizard (Google Analytics optional).
+2. **Enable Authentication:** left sidebar → *Build → Authentication → Get started* → under *Sign-in method*, enable **Email/Password**.
+3. **Enable Firestore:** left sidebar → *Build → Firestore Database → Create database* → start in **production mode** → pick any region.
+4. **Publish security rules:** in Firestore → *Rules* tab → replace the contents with everything in `firestore.rules` from this folder → **Publish**.
+5. **Get your web config:** *Project settings* (gear icon) → scroll to *Your apps* → click the **</>** (web) icon → register an app (any nickname) → copy the `firebaseConfig` object it shows you.
+6. Open `js/firebase-app.js` (or the `<script>` block containing `firebaseConfig` in the single-file version) and paste your values in, replacing the placeholders:
+   ```js
+   const firebaseConfig = {
+     apiKey: "AIza...",
+     authDomain: "carcare-plus-xxxxx.firebaseapp.com",
+     projectId: "carcare-plus-xxxxx",
+     storageBucket: "carcare-plus-xxxxx.appspot.com",
+     messagingSenderId: "...",
+     appId: "..."
+   };
+   ```
+7. Save, then open `index.html` (or push to GitHub Pages) — **Sign Up** now creates a real account and a real Firestore document.
+
+Until step 6 is done, clicking Log In/Sign Up shows a friendly reminder instead of failing silently.
+
+## 👑 Creating your first admin
+
+Every new signup gets `role: "user"` by default — nobody can make themselves an admin
+from the UI (that's a security rule, not an oversight). To create your first admin:
+
+1. Sign up normally through the site with the account you want to be admin.
+2. In the Firebase console → **Firestore Database → Data**, open the `users` collection, find that user's document (matched by their email).
+3. Edit the `role` field from `"user"` to `"admin"`, save.
+4. Refresh the site and log in — you'll now see **Admin Panel** in the account menu, with Overview / Users / All Vehicles / Service Records.
+
+From then on, that admin can promote or demote anyone else's role directly from the **Users** tab in the Admin Panel — no console needed.
+
+## 🗄️ Data model
 
 ```
-carcare-plus/
-├── index.html          # All page markup/sections
-├── css/
-│   └── style.css       # Design tokens + component styles
-├── js/
-│   └── script.js       # Nav, gauge, counters, typewriter, form logic
-└── README.md
+users/{uid}
+  name          string
+  email         string
+  role          "user" | "admin"
+  createdAt     timestamp
+
+vehicles/{autoId}
+  ownerId       uid of the owning user
+  make, model   string
+  year          number
+  plate         string
+  mileage       number
+  createdAt     timestamp
+
+serviceRecords/{autoId}
+  vehicleId     id of the vehicle this belongs to
+  ownerId       uid (mirrors the vehicle's owner, kept for fast security-rule checks)
+  type          string (e.g. "Oil change")
+  date          string (yyyy-mm-dd)
+  mileageAtService  number
+  cost          number
+  notes         string
+  createdAt     timestamp
 ```
+
+Security rules (`firestore.rules`) enforce that:
+- A signed-out visitor can read nothing and write nothing.
+- A regular user can only read/write **their own** vehicles and service records, and can only edit their own profile (not their `role`, in practice — the UI never exposes that, and only admins can write another user's `role`).
+- An admin can read everything and update any user's role.
 
 ## 🚀 Deploy to GitHub Pages
 
-1. Create a new GitHub repository (e.g. `carcare-plus-website`) and push this folder's contents to the `main` branch:
-   ```bash
-   git init
-   git add .
-   git commit -m "Initial commit: CarCare+ website"
-   git branch -M main
-   git remote add origin https://github.com/<your-username>/<your-repo>.git
-   git push -u origin main
-   ```
-2. In your repo on GitHub, go to **Settings → Pages**.
-3. Under **Build and deployment → Source**, choose **Deploy from a branch**.
-4. Set **Branch** to `main` and folder to `/ (root)`, then **Save**.
-5. Your site will be live in a minute or two at:
-   `https://<your-username>.github.io/<your-repo>/`
+Same as before — this is still a static site as far as GitHub Pages is concerned;
+Firebase is just a set of API calls made from the browser.
 
-No build tools, no `node_modules`, no configuration needed — it's a static site.
+```bash
+git init
+git add .
+git commit -m "CarCare+ with Firebase auth, user dashboard, admin panel"
+git branch -M main
+git remote add origin https://github.com/<your-username>/<your-repo>.git
+git push -u origin main
+```
+
+Then: **Settings → Pages → Deploy from a branch → `main` / root → Save.**
+Live at `https://<your-username>.github.io/<your-repo>/`.
+
+One extra step versus a plain static site: in the Firebase console → **Authentication →
+Settings → Authorized domains**, add your GitHub Pages domain
+(`<your-username>.github.io`) so Firebase Auth accepts requests from it.
 
 ## 🖥️ Run locally
 
-Just open `index.html` in a browser, or serve it so relative paths behave the same as production:
-
 ```bash
-# Python
 python3 -m http.server 8000
-
-# or Node
+# or
 npx serve .
 ```
+Visit `http://localhost:8000`. If you test locally, also add `localhost` to Firebase's
+Authorized domains list (it's usually there by default).
 
-Then visit `http://localhost:8000`.
+## 🧭 How the app layer works
 
-## 🎨 Customizing
-
-All design tokens (colors, fonts, radii, shadows) live at the top of `css/style.css` under `:root`. Update those variables to re-theme the whole site consistently — everything references them rather than hard-coded values.
-
-- **Fonts:** Sora (headings), Inter (body/UI), JetBrains Mono (numbers/data) — loaded from Google Fonts in `index.html`.
-- **Copy:** all section text lives directly in `index.html`, organized by `<section id="...">` blocks that match the nav links.
-- **Form endpoint:** the contact form in `#contactForm` currently only validates and shows a confirmation message client-side. Point it at your backend or a service like Formspree/Netlify Forms to actually collect submissions.
+- Clicking **Log In / Sign Up** opens a modal over the marketing site — no page reload.
+- On successful login, the marketing page is hidden and the **app shell** (sidebar +
+  panels) is shown. Clicking **Home** in the nav switches back.
+- **My Vehicles** (every user): add a vehicle, click a card to open its service
+  history, log new service records, delete records. Data updates live via Firestore
+  `onSnapshot` listeners — no manual refresh needed.
+- **Admin Panel** (admin role only): Overview (counts), Users (view + change roles),
+  All Vehicles, and all Service Records across every user.
 
 ## ♿ Accessibility
 
-- Semantic landmarks (`header`, `main`, `footer`, `nav`) and a skip-to-content link.
-- Visible focus rings on all interactive elements.
-- `aria-live` on the AI insight text and form status message.
-- Respects `prefers-reduced-motion` by disabling animated counters, the gauge fill animation, and scroll reveals.
+Modals trap focus visually, close on <kbd>Esc</kbd> or backdrop click, and use
+`role="dialog"`/`aria-modal`. Live regions (`aria-live`) announce toast messages and
+the AI insight text. All interactive elements are keyboard-reachable with visible
+focus rings.
 
 ## 📄 License
 
