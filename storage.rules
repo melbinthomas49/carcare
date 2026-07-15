@@ -1,0 +1,26 @@
+rules_version = '2';
+
+// Paste this into: Firebase Console → Storage → Rules → Publish
+// (Storage rules are separate from Firestore rules — this is a different
+// tab in the console, under the "Storage" section, not "Firestore Database".)
+service firebase.storage {
+  match /b/{bucket}/o {
+
+    // Bills are stored at: bills/{uid}/{filename}
+    // Only the owning user can upload/read/delete their own files.
+    // (Admins reading other users' bills happens via the Firestore
+    // "bills" collection's fileURL, which Storage's public download
+    // token already permits once you have the URL — no extra rule
+    // needed for the admin-read case here.)
+    match /bills/{uid}/{fileName} {
+      allow read: if request.auth != null && request.auth.uid == uid;
+      // "write" covers create, update, AND delete in Storage rules.
+      // On delete, request.resource is null, so we let that through
+      // unconditionally; on create/update we also check size + type.
+      allow write: if request.auth != null && request.auth.uid == uid
+                   && (request.resource == null
+                       || (request.resource.size < 5 * 1024 * 1024
+                           && request.resource.contentType.matches('image/.*|application/pdf')));
+    }
+  }
+}
