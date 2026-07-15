@@ -8,48 +8,62 @@
 <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 24 24%22><rect width=%2224%22 height=%2224%22 rx=%226%22 fill=%22%232F6FED%22/><path d=%22M5 15l1.2-4.2A2 2 0 0 1 8.1 9.3h7.8a2 2 0 0 1 1.9 1.5L19 15%22 stroke=%22white%22 stroke-width=%221.6%22 fill=%22none%22 stroke-linecap=%22round%22/><circle cx=%228%22 cy=%2216.5%22 r=%221.5%22 fill=%22white%22/><circle cx=%2216%22 cy=%2216.5%22 r=%221.5%22 fill=%22white%22/></svg>">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Sora:wght@600;700;800&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@500;600;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Rajdhani:wght@500;600;700&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@500;600;700&display=swap" rel="stylesheet">
 <style>
 /* ==========================================================
    CarCare+ — Design tokens
-   Palette: deep navy + electric blue + ice background,
-   with green/amber as functional health-status accents.
-   Type: Sora (display) / Inter (body) / JetBrains Mono (data)
+   Direction: an automotive instrument cluster. Dark graphite
+   housing, cyan/amber gauge illumination doing real semantic
+   work (good / caution / critical), spec-sheet white for
+   reference content below the fold. Display face (Rajdhani)
+   has the engineered, dashboard-readout character the rest
+   of the page borrows from.
    ========================================================== */
 
 :root{
-  --navy-950:#081226;
-  --navy-900:#0F2547;
-  --navy-800:#173463;
-  --blue-600:#2F6FED;
-  --blue-500:#4F86FF;
-  --blue-100:#E4ECFD;
-  --ice-50:#F4F8FE;
-  --white:#FFFFFF;
-  --slate-900:#16233A;
-  --slate-600:#5B6B82;
-  --slate-400:#93A2B8;
-  --line:#E3E9F5;
-  --green-500:#1FAA59;
-  --green-100:#E4F7EC;
-  --amber-500:#F5A623;
-  --amber-100:#FDF0DA;
-  --red-500:#E5484D;
+  /* cluster housing (dark) */
+  --ink-950:#080B0F;
+  --ink-900:#0E141B;
+  --ink-800:#161F29;
+  --ink-700:#202C39;
+  --ink-line:#2B3946;
 
-  --font-display:'Sora', 'Segoe UI', sans-serif;
-  --font-body:'Inter', 'Segoe UI', sans-serif;
-  --font-mono:'JetBrains Mono', monospace;
+  /* gauge illumination */
+  --cyan-400:#4DD9E8;
+  --cyan-300:#8CEAF2;
+  --cyan-900:#0B2A30;
+  --amber-400:#FFB238;
+  --amber-900:#3A2607;
+  --green-400:#3ED98A;
+  --green-900:#0E2B1D;
+  --red-400:#FF5A5F;
+  --red-900:#3A1315;
+
+  /* spec-sheet (light content sections) */
+  --paper-0:#FFFFFF;
+  --paper-50:#F4F7F9;
+  --paper-100:#E9EEF2;
+  --steel-900:#111A22;
+  --steel-700:#37444E;
+  --steel-500:#66757F;
+  --steel-300:#A8B4BC;
+
+  --font-display:'Rajdhani','Inter',sans-serif;
+  --font-body:'Inter','Segoe UI',sans-serif;
+  --font-mono:'JetBrains Mono',monospace;
 
   --radius-sm:8px;
   --radius-md:14px;
-  --radius-lg:22px;
+  --radius-lg:20px;
   --radius-pill:999px;
 
-  --shadow-sm:0 1px 2px rgba(15,37,71,.06);
-  --shadow-md:0 10px 30px -12px rgba(15,37,71,.18);
-  --shadow-lg:0 24px 60px -20px rgba(15,37,71,.28);
+  --shadow-sm:0 1px 2px rgba(8,11,15,.08);
+  --shadow-md:0 12px 28px -14px rgba(8,11,15,.35);
+  --shadow-lg:0 28px 64px -20px rgba(8,11,15,.45);
+  --shadow-glow:0 0 0 1px rgba(77,217,232,.15), 0 0 40px -8px rgba(77,217,232,.35);
 
   --ease:cubic-bezier(.4,0,.2,1);
+  --ease-out-back:cubic-bezier(.2,1.3,.3,1);
 }
 
 *,*::before,*::after{box-sizing:border-box;}
@@ -62,187 +76,124 @@ html{scroll-behavior:smooth;}
 body{
   margin:0;
   font-family:var(--font-body);
-  color:var(--slate-900);
-  background:var(--ice-50);
+  color:var(--steel-900);
+  background:var(--paper-50);
   -webkit-font-smoothing:antialiased;
-  line-height:1.5;
+  line-height:1.55;
 }
 
 h1,h2,h3{
   font-family:var(--font-display);
-  color:var(--navy-900);
+  font-weight:700;
+  color:var(--ink-900);
   margin:0 0 .5em;
-  line-height:1.15;
-  letter-spacing:-.01em;
+  line-height:1.1;
+  letter-spacing:-.005em;
 }
 
 p{margin:0 0 1em;}
 a{color:inherit;text-decoration:none;}
-ul{list-style:none;margin:0;padding:0;}
+ul,ol{list-style:none;margin:0;padding:0;}
 img{max-width:100%;display:block;}
 button{font-family:inherit;}
 
-.wrap{
-  width:100%;
-  max-width:1200px;
-  margin:0 auto;
-  padding:0 24px;
-}
+.wrap{width:100%;max-width:1200px;margin:0 auto;padding:0 24px;}
 
 .skip-link{
   position:absolute;left:-999px;top:0;
-  background:var(--blue-600);color:#fff;padding:10px 16px;border-radius:0 0 8px 0;
-  z-index:200;
+  background:var(--cyan-400);color:var(--ink-950);font-weight:700;
+  padding:10px 16px;border-radius:0 0 8px 0;z-index:200;
 }
 .skip-link:focus{left:0;}
 
 :focus-visible{
-  outline:2px solid var(--blue-600);
+  outline:2px solid var(--cyan-400);
   outline-offset:3px;
   border-radius:4px;
 }
 
 /* ---------- Buttons ---------- */
 .btn{
-  display:inline-flex;
-  align-items:center;
-  justify-content:center;
-  gap:8px;
-  padding:11px 20px;
-  border-radius:10px;
-  font-weight:600;
-  font-size:.95rem;
-  border:1px solid transparent;
-  cursor:pointer;
+  display:inline-flex;align-items:center;justify-content:center;gap:8px;
+  padding:11px 22px;border-radius:10px;
+  font-weight:700;font-size:.94rem;font-family:var(--font-body);
+  border:1px solid transparent;cursor:pointer;
   transition:transform .15s var(--ease), box-shadow .15s var(--ease), background .15s var(--ease), border-color .15s var(--ease), color .15s var(--ease);
   white-space:nowrap;
 }
 .btn:active{transform:translateY(1px);}
-.btn-primary{
-  background:var(--navy-900);
-  color:#fff;
-  box-shadow:var(--shadow-sm);
-}
-.btn-primary:hover{background:var(--blue-600); box-shadow:var(--shadow-md);}
-.btn-ghost{
-  background:transparent;
-  color:var(--slate-900);
-}
-.btn-ghost:hover{color:var(--blue-600);}
-.btn-outline{
-  background:#fff;
-  color:var(--navy-900);
-  border-color:var(--line);
-}
-.btn-outline:hover{border-color:var(--blue-600); color:var(--blue-600);}
-.btn-lg{padding:14px 26px; font-size:1rem;}
+.btn-primary{background:var(--ink-900);color:var(--paper-0);box-shadow:var(--shadow-sm);}
+.btn-primary:hover{background:var(--cyan-400); color:var(--ink-950); box-shadow:var(--shadow-md);}
+.btn-ghost{background:transparent;color:var(--steel-900);}
+.btn-ghost:hover{color:var(--cyan-400);}
+.btn-outline{background:var(--paper-0);color:var(--ink-900);border-color:var(--paper-100);}
+.btn-outline:hover{border-color:var(--cyan-400); color:var(--ink-900); box-shadow:0 0 0 3px var(--cyan-900);}
+.btn-lg{padding:14px 28px;font-size:1rem;}
 .btn-block{width:100%;}
+.btn-sm{padding:8px 15px;font-size:.85rem;}
+.btn-danger{background:var(--paper-0);color:var(--red-400);border-color:#F6C6C7;}
+.btn-danger:hover{background:var(--red-400);color:#fff;border-color:var(--red-400);}
 
-/* ---------- Eyebrow / labels ---------- */
+/* ---------- Eyebrow ---------- */
 .eyebrow{
-  display:inline-flex;
-  align-items:center;
-  gap:8px;
-  font-size:.8rem;
-  font-weight:600;
-  letter-spacing:.02em;
-  color:var(--blue-600);
-  background:var(--blue-100);
-  padding:6px 14px 6px 10px;
-  border-radius:var(--radius-pill);
-  margin:0 0 18px;
+  display:inline-flex;align-items:center;gap:8px;
+  font-family:var(--font-mono);
+  font-size:.74rem;font-weight:600;letter-spacing:.06em;text-transform:uppercase;
+  color:var(--cyan-400);
+  background:var(--ink-900);
+  padding:7px 14px 7px 10px;border-radius:var(--radius-pill);
+  margin:0 0 20px;
 }
-.eyebrow-dot{width:6px;height:6px;border-radius:50%;background:var(--blue-600);}
+.eyebrow-dot{width:6px;height:6px;border-radius:50%;background:var(--cyan-400);box-shadow:0 0 8px var(--cyan-400);}
 .eyebrow-center{margin-left:auto;margin-right:auto;}
 
 /* ==========================================================
    HEADER
    ========================================================== */
 .site-header{
-  position:sticky;
-  top:0;
-  z-index:100;
-  background:rgba(244,248,254,.85);
+  position:sticky;top:0;z-index:100;
+  background:rgba(244,247,249,.86);
   backdrop-filter:saturate(180%) blur(14px);
   border-bottom:1px solid transparent;
   transition:box-shadow .25s var(--ease), border-color .25s var(--ease), background .25s var(--ease);
 }
 .site-header.scrolled{
-  background:rgba(255,255,255,.92);
-  border-bottom-color:var(--line);
-  box-shadow:0 2px 20px -8px rgba(15,37,71,.12);
+  background:rgba(255,255,255,.94);
+  border-bottom-color:var(--paper-100);
+  box-shadow:0 2px 24px -10px rgba(8,11,15,.18);
 }
-.header-inner{
-  display:flex;
-  align-items:center;
-  justify-content:space-between;
-  height:72px;
-}
-.brand{
-  display:flex;
-  align-items:center;
-  gap:10px;
-  font-family:var(--font-display);
-  font-weight:700;
-  font-size:1.15rem;
-  color:var(--navy-900);
-}
+.header-inner{display:flex;align-items:center;justify-content:space-between;height:72px;}
+.brand{display:flex;align-items:center;gap:10px;font-family:var(--font-display);font-weight:700;font-size:1.25rem;color:var(--ink-900);}
 .brand-mark{
-  display:inline-flex;
-  align-items:center;
-  justify-content:center;
-  width:36px;height:36px;
-  border-radius:10px;
-  background:var(--navy-900);
-  color:#fff;
+  display:inline-flex;align-items:center;justify-content:center;
+  width:36px;height:36px;border-radius:10px;
+  background:var(--ink-900);color:var(--cyan-400);
 }
-.brand-plus{color:var(--blue-600);}
+.brand-plus{color:var(--cyan-400);}
 
-.main-nav{
-  display:flex;
-  align-items:center;
-  gap:32px;
-}
+.main-nav{display:flex;align-items:center;gap:30px;}
 .nav-link{
-  font-size:.93rem;
-  font-weight:500;
-  color:var(--slate-600);
-  position:relative;
-  padding:6px 0;
-  transition:color .15s var(--ease);
+  font-family:var(--font-body);
+  font-size:.92rem;font-weight:600;color:var(--steel-500);
+  position:relative;padding:7px 0;transition:color .15s var(--ease);
 }
 .nav-link::after{
-  content:"";
-  position:absolute;
-  left:0;right:0;bottom:0;
-  height:2px;
-  background:var(--blue-600);
-  transform:scaleX(0);
-  transform-origin:left;
+  content:"";position:absolute;left:0;right:0;bottom:0;height:2px;
+  background:var(--cyan-400);transform:scaleX(0);transform-origin:left;
   transition:transform .2s var(--ease);
 }
-.nav-link:hover{color:var(--navy-900);}
-.nav-link:hover::after,
-.nav-link.active::after{transform:scaleX(1);}
-.nav-link.active{color:var(--navy-900);}
+.nav-link:hover{color:var(--ink-900);}
+.nav-link:hover::after,.nav-link.active::after{transform:scaleX(1);}
+.nav-link.active{color:var(--ink-900);}
 
 .header-actions{display:flex;align-items:center;gap:10px;}
 
 .nav-toggle{
-  display:none;
-  width:38px;height:38px;
-  border-radius:8px;
-  border:1px solid var(--line);
-  background:#fff;
-  flex-direction:column;
-  align-items:center;
-  justify-content:center;
-  gap:4px;
+  display:none;width:38px;height:38px;border-radius:8px;
+  border:1px solid var(--paper-100);background:var(--paper-0);
+  flex-direction:column;align-items:center;justify-content:center;gap:4px;
 }
-.nav-toggle span{
-  width:18px;height:2px;background:var(--navy-900);
-  transition:transform .2s var(--ease), opacity .2s var(--ease);
-}
+.nav-toggle span{width:18px;height:2px;background:var(--ink-900);transition:transform .2s var(--ease), opacity .2s var(--ease);}
 .nav-toggle[aria-expanded="true"] span:nth-child(1){transform:translateY(6px) rotate(45deg);}
 .nav-toggle[aria-expanded="true"] span:nth-child(2){opacity:0;}
 .nav-toggle[aria-expanded="true"] span:nth-child(3){transform:translateY(-6px) rotate(-45deg);}
@@ -251,512 +202,464 @@ button{font-family:inherit;}
    HERO
    ========================================================== */
 .hero{
-  padding:64px 0 40px;
-  background:
-    radial-gradient(1000px 500px at 85% -10%, rgba(47,111,237,.10), transparent 60%),
-    var(--ice-50);
+  padding:60px 0 0;
+  background:var(--paper-50);
   overflow:hidden;
 }
-.hero-grid{
-  display:grid;
-  grid-template-columns:1.05fr .95fr;
-  gap:56px;
-  align-items:center;
+.hero-grid{display:grid;grid-template-columns:1fr 1.05fr;gap:40px;align-items:center;padding-bottom:56px;}
+.hero-title{font-size:clamp(2.1rem,3.6vw,3.15rem);font-weight:700;}
+.text-accent{
+  color:var(--ink-900);
+  background:linear-gradient(180deg, transparent 62%, var(--cyan-400) 62%);
 }
-.hero-title{
-  font-size:clamp(2.1rem, 3.6vw, 3.1rem);
-  font-weight:800;
-}
-.text-accent{color:var(--blue-600);}
-.hero-sub{
-  font-size:1.08rem;
-  color:var(--slate-600);
-  max-width:52ch;
-}
-.checklist{
-  display:grid;
-  gap:10px;
-  margin:22px 0 30px;
-}
-.checklist li{
-  display:flex;
-  align-items:center;
-  gap:10px;
-  font-size:.96rem;
-  font-weight:500;
-  color:var(--slate-900);
-}
+.hero-sub{font-size:1.08rem;color:var(--steel-700);max-width:50ch;}
+.checklist{display:grid;gap:11px;margin:22px 0 30px;}
+.checklist li{display:flex;align-items:center;gap:10px;font-size:.96rem;font-weight:600;color:var(--steel-900);}
 .checklist li::before{
-  content:"";
-  flex:0 0 18px;
-  width:18px;height:18px;
-  border-radius:50%;
-  background:var(--green-100);
-  border:1.5px solid var(--green-500);
-  background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%231FAA59' stroke-width='3' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='20 6 9 17 4 12'/%3E%3C/svg%3E");
-  background-repeat:no-repeat;
-  background-position:center;
-  background-size:11px;
+  content:"";flex:0 0 18px;width:18px;height:18px;border-radius:50%;
+  background:var(--green-900);border:1.5px solid var(--green-400);
+  background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%233ED98A' stroke-width='3' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='20 6 9 17 4 12'/%3E%3C/svg%3E");
+  background-repeat:no-repeat;background-position:center;background-size:11px;
 }
 .checklist-light li{color:#fff;}
-.hero-cta{display:flex;flex-wrap:wrap;gap:14px;margin-bottom:28px;}
+.hero-cta{display:flex;flex-wrap:wrap;gap:14px;margin-bottom:26px;}
 .hero-trust{display:flex;align-items:center;gap:10px;}
-.trust-stars{color:var(--amber-500);letter-spacing:2px;font-size:.9rem;}
-.hero-trust p{margin:0;font-size:.86rem;color:var(--slate-600);}
+.trust-stars{color:var(--amber-400);letter-spacing:2px;font-size:.9rem;}
+.hero-trust p{margin:0;font-size:.86rem;color:var(--steel-500);}
 
-/* ---------- Hero dashboard visual ---------- */
+/* ---------- Instrument cluster hero visual ---------- */
 .hero-visual{position:relative;display:flex;justify-content:center;}
-.dash-glow{
-  position:absolute;
-  width:340px;height:340px;
-  background:radial-gradient(circle, rgba(47,111,237,.25), transparent 70%);
-  filter:blur(10px);
-  top:10%;
-  z-index:0;
+.cluster-glow{
+  position:absolute;width:420px;height:420px;
+  background:radial-gradient(circle, rgba(77,217,232,.22), transparent 70%);
+  filter:blur(10px);top:0;z-index:0;
 }
-.dash-card{
-  position:relative;
-  z-index:1;
-  width:100%;
-  max-width:380px;
-  background:#fff;
-  border:1px solid var(--line);
+.cluster-panel{
+  position:relative;z-index:1;width:100%;max-width:440px;
+  background:
+    radial-gradient(140% 100% at 50% 0%, rgba(77,217,232,.06), transparent 60%),
+    linear-gradient(180deg, var(--ink-900), var(--ink-950));
+  border:1px solid var(--ink-line);
   border-radius:var(--radius-lg);
-  box-shadow:var(--shadow-lg);
-  padding:24px;
-  animation:floatCard 6s ease-in-out infinite;
+  box-shadow:var(--shadow-lg), var(--shadow-glow);
+  padding:22px 22px 20px;
+  color:#fff;
 }
-@keyframes floatCard{
-  0%,100%{transform:translateY(0);}
-  50%{transform:translateY(-10px);}
-}
-.dash-topbar{display:flex;align-items:center;justify-content:space-between;margin-bottom:20px;}
-.dash-user{display:flex;align-items:center;gap:10px;}
-.dash-avatar{
-  width:38px;height:38px;border-radius:50%;
-  background:var(--navy-900);color:#fff;
+.cluster-topbar{display:flex;align-items:center;justify-content:space-between;margin-bottom:16px;}
+.cluster-user{display:flex;align-items:center;gap:10px;}
+.cluster-avatar{
+  width:36px;height:36px;border-radius:50%;
+  background:var(--ink-700);color:var(--cyan-400);border:1px solid var(--ink-line);
   display:flex;align-items:center;justify-content:center;
   font-family:var(--font-display);font-weight:700;
 }
-.dash-greet{margin:0;font-weight:700;color:var(--navy-900);font-size:.95rem;}
-.dash-vehicle{margin:0;font-size:.78rem;color:var(--slate-600);}
-.dash-bell{color:var(--slate-400);}
+.cluster-greet{margin:0;font-weight:700;font-size:.92rem;color:#fff;}
+.cluster-vehicle{margin:0;font-size:.74rem;color:var(--steel-300);}
+.cluster-bell{color:var(--steel-300);}
 
-.dash-health{
-  display:flex;
-  gap:18px;
-  align-items:center;
-  padding-bottom:18px;
-  margin-bottom:18px;
-  border-bottom:1px dashed var(--line);
+/* dials row */
+.cluster-dials{display:grid;grid-template-columns:.72fr 1fr .72fr;align-items:end;gap:2px;margin-bottom:6px;}
+.cluster-gauge{position:relative;display:flex;flex-direction:column;align-items:center;}
+.cluster-gauge-svg{width:100%;height:auto;overflow:visible;}
+.cluster-gauge--sm .cluster-gauge-svg{padding-bottom:4px;}
+.cluster-track{fill:none;stroke:var(--ink-700);stroke-width:9;stroke-linecap:round;}
+.cluster-fill{fill:none;stroke-width:9;stroke-linecap:round;transition:stroke-dashoffset 1.1s var(--ease);}
+.cluster-fill--green{stroke:var(--green-400); filter:drop-shadow(0 0 5px rgba(62,217,138,.55));}
+.cluster-fill--amber{stroke:var(--amber-400); filter:drop-shadow(0 0 5px rgba(255,178,56,.55));}
+.cluster-fill--cyan{stroke:var(--cyan-400); filter:drop-shadow(0 0 5px rgba(77,217,232,.55));}
+.cluster-needle{
+  stroke:#fff;stroke-width:2.4;stroke-linecap:round;
+  transform-origin:70px 82px;
+  transform:rotate(-90deg);
+  transition:transform 1.5s var(--ease-out-back);
+  filter:drop-shadow(0 0 3px rgba(255,255,255,.5));
 }
-.gauge{position:relative;width:108px;height:108px;flex:0 0 auto;}
-.gauge svg{transform:rotate(-90deg);}
-.gauge-track{fill:none;stroke:var(--blue-100);stroke-width:9;}
-.gauge-fill{
-  fill:none;
-  stroke:var(--green-500);
-  stroke-width:9;
-  stroke-linecap:round;
-  stroke-dasharray:314;
-  stroke-dashoffset:314;
-  transition:stroke-dashoffset 1.4s var(--ease);
+.cluster-needle--lg{transform-origin:70px 84px;stroke-width:3;}
+.cluster-pivot{fill:#fff;}
+.cluster-pivot--lg{fill:var(--cyan-400);}
+.cluster-readout{
+  position:absolute;left:50%;bottom:2px;transform:translateX(-50%);
+  display:flex;flex-direction:column;align-items:center;
 }
-.gauge-label{
-  position:absolute;inset:0;
-  display:flex;flex-direction:column;
-  align-items:center;justify-content:center;
-}
-.gauge-num{font-family:var(--font-mono);font-weight:700;font-size:1.6rem;color:var(--navy-900);}
-.gauge-of{font-size:.68rem;color:var(--slate-600);text-transform:uppercase;letter-spacing:.04em;}
+.cluster-gauge--lg .cluster-readout{bottom:6px;}
+.cluster-value{font-family:var(--font-mono);font-weight:700;font-size:1.05rem;color:#fff;}
+.cluster-value--lg{font-size:1.9rem;color:var(--cyan-300);}
+.cluster-unit{font-size:.6rem;color:var(--steel-300);text-transform:uppercase;letter-spacing:.05em;}
+.cluster-gauge--sm .cluster-unit{font-size:.56rem;}
 
-.dash-health-status{margin:0 0 2px;font-size:.9rem;color:var(--slate-900);}
-.dash-health-status strong{color:var(--green-500);}
-.dash-health-note{margin:0 0 10px;font-size:.76rem;color:var(--slate-400);}
-.dash-mini-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px 14px;}
-.dash-mini-grid div{display:flex;flex-direction:column;gap:2px;}
-.dash-mini-grid span{font-size:.68rem;color:var(--slate-400);}
-.dash-mini-grid strong{font-size:.8rem;color:var(--navy-900);}
-.dash-mini-grid strong.ok{color:var(--green-500);}
-
-.dash-insight{
-  background:var(--ice-50);
-  border:1px solid var(--line);
+.cluster-insight{
+  background:var(--ink-800);
+  border:1px solid var(--ink-line);
   border-radius:var(--radius-md);
-  padding:14px 16px;
-  margin-bottom:18px;
-  min-height:64px;
+  padding:13px 15px;margin:14px 0 14px;
+  min-height:60px;
 }
-.dash-insight-tag{
-  display:inline-block;
-  font-size:.65rem;
-  font-weight:700;
-  letter-spacing:.05em;
-  text-transform:uppercase;
-  color:var(--blue-600);
-  background:var(--blue-100);
-  padding:3px 8px;
-  border-radius:6px;
-  margin-bottom:8px;
+.cluster-insight-tag{
+  display:inline-block;font-family:var(--font-mono);
+  font-size:.62rem;font-weight:700;letter-spacing:.06em;text-transform:uppercase;
+  color:var(--cyan-400);background:var(--cyan-900);
+  padding:3px 8px;border-radius:6px;margin-bottom:8px;
 }
-#typewriter{
-  margin:0;
-  font-size:.85rem;
-  color:var(--slate-900);
-  min-height:2.4em;
-}
+#typewriter{margin:0;font-size:.85rem;color:var(--paper-100);min-height:2.4em;}
 #typewriter::after{
-  content:"";
-  display:inline-block;
-  width:2px;height:1em;
-  background:var(--blue-600);
-  vertical-align:-2px;
-  margin-left:2px;
-  animation:blink 1s step-end infinite;
+  content:"";display:inline-block;width:2px;height:1em;background:var(--cyan-400);
+  vertical-align:-2px;margin-left:2px;animation:blink 1s step-end infinite;
 }
 @keyframes blink{50%{opacity:0;}}
 
-.dash-activity-title{font-size:.76rem;font-weight:700;color:var(--slate-400);text-transform:uppercase;letter-spacing:.04em;margin-bottom:10px;}
-.dash-activity-item{
-  display:grid;
-  grid-template-columns:auto 1fr auto;
-  align-items:center;
-  gap:10px;
-  padding:8px 0;
-  font-size:.83rem;
-  color:var(--slate-900);
+.cluster-activity{display:flex;flex-direction:column;gap:2px;}
+.cluster-activity-item{
+  display:grid;grid-template-columns:auto 1fr auto;align-items:center;gap:10px;
+  padding:7px 2px;font-size:.8rem;color:var(--paper-100);
+  border-top:1px dashed var(--ink-line);
 }
-.dash-activity-meta{color:var(--slate-400);font-size:.76rem;}
+.cluster-activity-item:first-child{border-top:none;}
+.cluster-activity-meta{color:var(--steel-300);font-size:.74rem;}
 .dot{width:8px;height:8px;border-radius:50%;flex:0 0 auto;}
-.dot-amber{background:var(--amber-500);}
-.dot-green{background:var(--green-500);}
+.dot-amber{background:var(--amber-400);box-shadow:0 0 6px var(--amber-400);}
+.dot-green{background:var(--green-400);box-shadow:0 0 6px var(--green-400);}
 
 /* ==========================================================
    LOGO STRIP
    ========================================================== */
-.logo-strip{padding:26px 0;border-top:1px solid var(--line);border-bottom:1px solid var(--line);background:#fff;}
+.logo-strip{padding:24px 0;border-top:1px solid var(--paper-100);border-bottom:1px solid var(--paper-100);background:var(--paper-0);}
 .logo-strip-inner{display:flex;align-items:center;gap:24px;flex-wrap:wrap;}
-.logo-strip-inner > span{font-size:.78rem;color:var(--slate-400);white-space:nowrap;}
+.logo-strip-inner > span{font-family:var(--font-mono);font-size:.72rem;color:var(--steel-300);text-transform:uppercase;letter-spacing:.05em;white-space:nowrap;}
 .logo-row{display:flex;gap:28px;flex-wrap:wrap;}
-.logo-row span{font-family:var(--font-display);font-weight:700;color:var(--slate-400);font-size:.92rem;opacity:.75;}
+.logo-row span{font-family:var(--font-display);font-weight:700;color:var(--steel-300);font-size:.95rem;}
 
 /* ==========================================================
    SECTION shared
    ========================================================== */
 .section{padding:96px 0;}
-.section-tint{background:#fff;}
+.section-tint{background:var(--paper-0);}
 .section-head{max-width:640px;margin:0 auto 56px;text-align:center;}
-.section-title{font-size:clamp(1.7rem,2.6vw,2.3rem);}
+.section-title{font-size:clamp(1.8rem,2.6vw,2.35rem);}
 .section-title-left{text-align:left;margin-bottom:.4em;}
-.section-sub{color:var(--slate-600);font-size:1.02rem;}
+.section-sub{color:var(--steel-500);font-size:1.02rem;}
 .section-sub-left{text-align:left;max-width:48ch;}
 
 /* ---------- Feature grid ---------- */
-.feature-grid{
-  display:grid;
-  grid-template-columns:repeat(3,1fr);
-  gap:22px;
-}
+.feature-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:20px;}
 .feature-card{
-  background:#fff;
-  border:1px solid var(--line);
+  position:relative;
+  background:var(--paper-0);
+  border:1px solid var(--paper-100);
+  border-left:3px solid transparent;
   border-radius:var(--radius-lg);
   padding:28px 26px;
   transition:transform .2s var(--ease), box-shadow .2s var(--ease), border-color .2s var(--ease);
 }
-.feature-card:hover{
-  transform:translateY(-4px);
-  box-shadow:var(--shadow-md);
-  border-color:var(--blue-500);
-}
+.feature-card:hover{transform:translateY(-4px);box-shadow:var(--shadow-md);border-left-color:var(--cyan-400);}
 .feature-icon{
-  width:46px;height:46px;
-  border-radius:12px;
-  display:flex;align-items:center;justify-content:center;
-  margin-bottom:16px;
+  width:44px;height:44px;border-radius:10px;
+  display:flex;align-items:center;justify-content:center;margin-bottom:16px;
+  border:1px solid;
 }
-.icon-blue{background:var(--blue-100);color:var(--blue-600);}
-.icon-green{background:var(--green-100);color:var(--green-500);}
-.icon-purple{background:#EFE7FD;color:#7C4DEB;}
-.icon-amber{background:var(--amber-100);color:var(--amber-500);}
-.icon-red{background:#FBE3E4;color:var(--red-500);}
-.icon-teal{background:#DEF5F1;color:#0FA98A;}
+.icon-blue{background:var(--cyan-900);color:var(--cyan-400);border-color:rgba(77,217,232,.25);}
+.icon-green{background:var(--green-900);color:var(--green-400);border-color:rgba(62,217,138,.25);}
+.icon-purple{background:#241B33;color:#B296F2;border-color:rgba(178,150,242,.25);}
+.icon-amber{background:var(--amber-900);color:var(--amber-400);border-color:rgba(255,178,56,.25);}
+.icon-red{background:var(--red-900);color:var(--red-400);border-color:rgba(255,90,95,.25);}
+.icon-teal{background:#0E2B28;color:#39D6BE;border-color:rgba(57,214,190,.25);}
 .feature-card h3{font-size:1.08rem;margin-bottom:8px;}
-.feature-card p{font-size:.9rem;color:var(--slate-600);margin:0;}
+.feature-card p{font-size:.9rem;color:var(--steel-500);margin:0;}
 
-/* ---------- Steps ---------- */
+/* ---------- Steps: styled as a trip-odometer strip ---------- */
 .steps{
-  display:grid;
-  grid-template-columns:repeat(5,1fr);
-  gap:18px;
-  counter-reset:step;
-}
-.step{
   position:relative;
-  background:#fff;
-  border:1px solid var(--line);
-  border-radius:var(--radius-lg);
-  padding:26px 20px 22px;
-  text-align:center;
+  display:grid;grid-template-columns:repeat(5,1fr);gap:0;
+  counter-reset:step;
+  border-top:2px solid var(--paper-100);
+  padding-top:6px;
+}
+.step{position:relative;text-align:center;padding:26px 16px 6px;}
+.step::before{
+  content:"";position:absolute;top:-8px;left:50%;transform:translateX(-50%);
+  width:14px;height:14px;border-radius:50%;
+  background:var(--paper-0);border:2px solid var(--ink-900);
 }
 .step-index{
-  position:absolute;
-  top:14px;right:16px;
-  font-family:var(--font-mono);
-  font-size:.72rem;
-  font-weight:700;
-  color:var(--slate-400);
+  position:absolute;top:14px;left:50%;transform:translateX(-50%);
+  font-family:var(--font-mono);font-size:.66rem;font-weight:700;color:var(--steel-300);
+  letter-spacing:.05em;
 }
 .step-icon{
-  width:48px;height:48px;
-  margin:0 auto 14px;
-  border-radius:50%;
-  background:var(--navy-900);
-  color:#fff;
+  width:52px;height:52px;margin:22px auto 14px;border-radius:50%;
+  background:var(--ink-900);color:var(--cyan-400);
   display:flex;align-items:center;justify-content:center;
+  border:1px solid var(--ink-line);
 }
 .step h3{font-size:1rem;margin-bottom:6px;}
-.step p{font-size:.85rem;color:var(--slate-600);margin:0;}
+.step p{font-size:.85rem;color:var(--steel-500);margin:0;}
 
 /* ---------- Why / estimate showcase ---------- */
-.why-grid{
-  display:grid;
-  grid-template-columns:.9fr 1.1fr;
-  gap:64px;
-  align-items:center;
-}
+.why-grid{display:grid;grid-template-columns:.9fr 1.1fr;gap:64px;align-items:center;}
 .estimate-card{
-  background:var(--navy-900);
-  color:#fff;
-  border-radius:var(--radius-lg);
-  padding:26px;
-  box-shadow:var(--shadow-lg);
-  max-width:400px;
+  background:linear-gradient(180deg, var(--ink-900), var(--ink-950));
+  border:1px solid var(--ink-line);
+  color:#fff;border-radius:var(--radius-lg);padding:26px;
+  box-shadow:var(--shadow-lg);max-width:400px;
 }
-.estimate-head{
-  display:flex;justify-content:space-between;align-items:center;
-  font-size:.78rem;color:var(--slate-400);
-  margin-bottom:14px;
-}
+.estimate-head{display:flex;justify-content:space-between;align-items:center;font-size:.78rem;color:var(--steel-300);margin-bottom:14px;font-family:var(--font-mono);}
 .estimate-close{font-size:1rem;}
-.estimate-title{font-family:var(--font-display);font-weight:700;font-size:1.1rem;margin-bottom:2px;color:#fff;}
-.estimate-sub{font-size:.8rem;color:var(--slate-400);margin-bottom:16px;}
+.estimate-title{font-family:var(--font-display);font-weight:700;font-size:1.15rem;margin-bottom:2px;color:#fff;}
+.estimate-sub{font-size:.8rem;color:var(--steel-300);margin-bottom:16px;}
 .estimate-table{width:100%;border-collapse:collapse;font-size:.85rem;margin-bottom:16px;}
 .estimate-table th{
-  text-align:left;
-  font-weight:600;
-  color:var(--slate-400);
-  padding:0 0 8px;
-  border-bottom:1px solid rgba(255,255,255,.12);
-  font-size:.72rem;
-  text-transform:uppercase;
-  letter-spacing:.03em;
+  text-align:left;font-weight:600;color:var(--steel-300);padding:0 0 8px;
+  border-bottom:1px solid var(--ink-line);font-family:var(--font-mono);
+  font-size:.68rem;text-transform:uppercase;letter-spacing:.05em;
 }
-.estimate-table td{
-  padding:9px 0;
-  border-bottom:1px solid rgba(255,255,255,.08);
-  font-family:var(--font-mono);
-  font-size:.82rem;
-}
-.estimate-table td:first-child{font-family:var(--font-body);font-weight:500;}
-.estimate-ai{
-  background:rgba(255,255,255,.06);
-  border:1px solid rgba(255,255,255,.12);
-  border-radius:var(--radius-md);
-  padding:14px 16px;
-}
-.estimate-ai strong{display:block;font-size:.78rem;color:var(--green-500);margin-bottom:6px;text-transform:uppercase;letter-spacing:.03em;}
-.estimate-ai p{margin:0;font-size:.84rem;color:var(--blue-100);}
+.estimate-table td{padding:9px 0;border-bottom:1px solid var(--ink-line);font-family:var(--font-mono);font-size:.82rem;}
+.estimate-table td:first-child{font-family:var(--font-body);font-weight:600;}
+.estimate-ai{background:var(--cyan-900);border:1px solid rgba(77,217,232,.25);border-radius:var(--radius-md);padding:14px 16px;}
+.estimate-ai strong{display:block;font-family:var(--font-mono);font-size:.72rem;color:var(--cyan-300);margin-bottom:6px;text-transform:uppercase;letter-spacing:.05em;}
+.estimate-ai p{margin:0;font-size:.84rem;color:var(--paper-100);}
 
-.stat-row{
-  display:grid;
-  grid-template-columns:repeat(4,1fr);
-  gap:18px;
-  margin:32px 0;
-}
-.stat-num{
-  display:flex;
-  align-items:baseline;
-  gap:2px;
-  font-family:var(--font-mono);
-  font-weight:700;
-  font-size:1.7rem;
-  color:var(--navy-900);
-}
-.stat-label{display:block;font-size:.78rem;color:var(--slate-600);margin-top:4px;}
+.stat-row{display:grid;grid-template-columns:repeat(4,1fr);gap:18px;margin:32px 0;}
+.stat-num{display:flex;align-items:baseline;gap:2px;font-family:var(--font-mono);font-weight:700;font-size:1.75rem;color:var(--ink-900);}
+.stat-label{display:block;font-size:.78rem;color:var(--steel-500);margin-top:4px;}
 .why-list{display:grid;gap:10px;margin-bottom:28px;}
-.why-list li{
-  display:flex;align-items:center;gap:10px;
-  font-size:.95rem;color:var(--slate-900);
-}
+.why-list li{display:flex;align-items:center;gap:10px;font-size:.95rem;color:var(--steel-900);}
 .why-list li::before{
-  content:"";
-  flex:0 0 18px;width:18px;height:18px;border-radius:50%;
-  background:var(--green-100);
-  border:1.5px solid var(--green-500);
-  background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%231FAA59' stroke-width='3' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='20 6 9 17 4 12'/%3E%3C/svg%3E");
+  content:"";flex:0 0 18px;width:18px;height:18px;border-radius:50%;
+  background:var(--cyan-900);border:1.5px solid var(--cyan-400);
+  background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%234DD9E8' stroke-width='3' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='20 6 9 17 4 12'/%3E%3C/svg%3E");
   background-repeat:no-repeat;background-position:center;background-size:11px;
 }
 .store-badges{display:flex;gap:12px;flex-wrap:wrap;}
 .store-badge{
-  display:flex;align-items:center;gap:10px;
-  background:var(--navy-900);color:#fff;
-  padding:9px 16px;border-radius:10px;
-  font-weight:600;font-size:.92rem;
+  display:flex;align-items:center;gap:10px;background:var(--ink-900);color:#fff;
+  padding:9px 16px;border-radius:10px;font-weight:700;font-size:.92rem;
   transition:background .15s var(--ease);
 }
-.store-badge:hover{background:var(--blue-600);}
+.store-badge:hover{background:var(--cyan-400); color:var(--ink-950);}
 .store-badge small{display:block;font-weight:400;font-size:.65rem;opacity:.8;}
 
 /* ---------- Pricing ---------- */
-.pricing-grid{
-  display:grid;
-  grid-template-columns:repeat(3,1fr);
-  gap:22px;
-  align-items:stretch;
-}
+.pricing-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:22px;align-items:stretch;}
 .price-card{
-  position:relative;
-  background:#fff;
-  border:1px solid var(--line);
-  border-radius:var(--radius-lg);
-  padding:32px 28px;
-  display:flex;
-  flex-direction:column;
+  position:relative;background:var(--paper-0);border:1px solid var(--paper-100);
+  border-radius:var(--radius-lg);padding:32px 28px;display:flex;flex-direction:column;
 }
-.price-card-featured{
-  border-color:var(--blue-600);
-  box-shadow:var(--shadow-lg);
-  transform:translateY(-8px);
-}
+.price-card-featured{border-color:var(--ink-900); box-shadow:var(--shadow-lg); transform:translateY(-8px);}
 .price-badge{
-  position:absolute;top:-13px;left:28px;
-  background:var(--blue-600);color:#fff;
-  font-size:.72rem;font-weight:700;
+  position:absolute;top:-13px;left:28px;background:var(--ink-900);color:var(--cyan-400);
+  font-family:var(--font-mono);font-size:.68rem;font-weight:700;letter-spacing:.03em;
   padding:5px 12px;border-radius:var(--radius-pill);
 }
 .price-card h3{font-size:1.15rem;margin-bottom:6px;}
-.price-tag{font-family:var(--font-mono);font-size:2rem;font-weight:700;color:var(--navy-900);margin-bottom:4px;}
-.price-tag span{}
-.price-desc{color:var(--slate-600);font-size:.88rem;margin-bottom:20px;}
+.price-tag{font-family:var(--font-mono);font-size:2.1rem;font-weight:700;color:var(--ink-900);margin-bottom:4px;}
+.price-desc{color:var(--steel-500);font-size:.88rem;margin-bottom:20px;}
 .price-list{display:grid;gap:10px;margin-bottom:26px;flex:1;}
-.price-list li{
-  font-size:.88rem;color:var(--slate-900);
-  padding-left:22px;position:relative;
-}
+.price-list li{font-size:.88rem;color:var(--steel-900);padding-left:22px;position:relative;}
 .price-list li::before{
-  content:"";position:absolute;left:0;top:.45em;
-  width:12px;height:12px;border-radius:50%;
-  background:var(--blue-100);
-  background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%232F6FED' stroke-width='4' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='20 6 9 17 4 12'/%3E%3C/svg%3E");
+  content:"";position:absolute;left:0;top:.45em;width:12px;height:12px;border-radius:50%;
+  background:var(--cyan-900);
+  background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%234DD9E8' stroke-width='4' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='20 6 9 17 4 12'/%3E%3C/svg%3E");
   background-repeat:no-repeat;background-position:center;background-size:8px;
 }
 
 /* ---------- CTA / contact ---------- */
 .cta-section{
-  background:var(--navy-900);
-  color:#fff;
-  border-radius:var(--radius-lg);
-  margin:0 24px;
-  width:auto;
-  padding:80px 0;
+  background:linear-gradient(180deg, var(--ink-900), var(--ink-950));
+  color:#fff;border-radius:var(--radius-lg);margin:0 24px;width:auto;padding:80px 0;
 }
 .cta-section .wrap{max-width:1152px;}
 .cta-title{color:#fff;}
-.cta-grid{
-  display:grid;
-  grid-template-columns:1fr .9fr;
-  gap:56px;
-  align-items:center;
-}
-.contact-form{
-  background:#fff;
-  border-radius:var(--radius-lg);
-  padding:30px;
-  color:var(--slate-900);
-  box-shadow:var(--shadow-lg);
-}
+.cta-grid{display:grid;grid-template-columns:1fr .9fr;gap:56px;align-items:center;}
+.contact-form{background:var(--paper-0);border-radius:var(--radius-lg);padding:30px;color:var(--steel-900);box-shadow:var(--shadow-lg);}
 .form-row{margin-bottom:16px;display:flex;flex-direction:column;gap:6px;}
-.form-row label{font-size:.82rem;font-weight:600;color:var(--slate-900);}
+.form-row label{font-size:.82rem;font-weight:700;color:var(--steel-900);}
 .form-row input{
-  padding:11px 14px;
-  border:1px solid var(--line);
-  border-radius:9px;
-  font-size:.94rem;
-  font-family:inherit;
-  color:var(--slate-900);
-  background:var(--ice-50);
+  padding:11px 14px;border:1px solid var(--paper-100);border-radius:9px;
+  font-size:.94rem;font-family:inherit;color:var(--steel-900);background:var(--paper-50);
   transition:border-color .15s var(--ease), box-shadow .15s var(--ease);
 }
-.form-row input:focus{
-  border-color:var(--blue-600);
-  outline:none;
-  box-shadow:0 0 0 3px var(--blue-100);
-  background:#fff;
-}
-.form-row input:invalid:not(:placeholder-shown){border-color:var(--red-500);}
-.form-note{margin:12px 0 0;font-size:.84rem;text-align:center;min-height:1.2em;color:var(--green-500);font-weight:600;}
+.form-row input:focus{border-color:var(--cyan-400);outline:none;box-shadow:0 0 0 3px var(--cyan-900);background:#fff;}
+.form-row input:invalid:not(:placeholder-shown){border-color:var(--red-400);}
+.form-note{margin:12px 0 0;font-size:.84rem;text-align:center;min-height:1.2em;color:var(--green-400);font-weight:700;}
 
 /* ==========================================================
    FOOTER
    ========================================================== */
-.site-footer{
-  background:var(--navy-950);
-  color:var(--slate-400);
-  margin-top:96px;
-  padding-top:64px;
-}
-.footer-top{
-  display:grid;
-  grid-template-columns:1fr 2fr;
-  gap:48px;
-  padding-bottom:48px;
-  border-bottom:1px solid rgba(255,255,255,.08);
-}
-.footer-brand p{color:var(--slate-400);font-size:.9rem;margin-top:10px;}
+.site-footer{background:var(--ink-950);color:var(--steel-300);margin-top:96px;padding-top:64px;}
+.footer-top{display:grid;grid-template-columns:1fr 2fr;gap:48px;padding-bottom:48px;border-bottom:1px solid var(--ink-line);}
+.footer-brand p{color:var(--steel-300);font-size:.9rem;margin-top:10px;}
 .brand-footer{color:#fff;}
+.brand-footer .brand-mark{background:var(--ink-700);}
 .footer-cols{display:grid;grid-template-columns:repeat(3,1fr);gap:24px;}
 .footer-col h4{
-  color:#fff;font-size:.85rem;font-weight:700;
-  text-transform:uppercase;letter-spacing:.04em;
-  margin-bottom:14px;font-family:var(--font-body);
+  color:#fff;font-family:var(--font-mono);font-size:.76rem;font-weight:700;
+  text-transform:uppercase;letter-spacing:.06em;margin-bottom:14px;
 }
-.footer-col a{
-  display:block;font-size:.9rem;color:var(--slate-400);
-  padding:5px 0;transition:color .15s var(--ease);
-}
-.footer-col a:hover{color:#fff;}
-.footer-bottom{
-  display:flex;align-items:center;justify-content:space-between;
-  padding:24px 0 28px;
-  font-size:.82rem;
-}
+.footer-col a{display:block;font-size:.9rem;color:var(--steel-300);padding:5px 0;transition:color .15s var(--ease);}
+.footer-col a:hover{color:var(--cyan-400);}
+.footer-bottom{display:flex;align-items:center;justify-content:space-between;padding:24px 0 28px;font-size:.82rem;}
 .footer-social{display:flex;gap:14px;}
 .footer-social a{
-  width:34px;height:34px;border-radius:50%;
-  background:rgba(255,255,255,.06);
-  display:flex;align-items:center;justify-content:center;
-  color:var(--slate-400);
+  width:34px;height:34px;border-radius:50%;background:var(--ink-800);
+  display:flex;align-items:center;justify-content:center;color:var(--steel-300);
   transition:background .15s var(--ease), color .15s var(--ease);
 }
-.footer-social a:hover{background:var(--blue-600);color:#fff;}
+.footer-social a:hover{background:var(--cyan-400);color:var(--ink-950);}
 
 /* ==========================================================
    Scroll reveal
    ========================================================== */
-[data-reveal]{
-  opacity:0;
-  transform:translateY(24px);
-  transition:opacity .6s var(--ease), transform .6s var(--ease);
-}
-[data-reveal].is-visible{
-  opacity:1;
-  transform:translateY(0);
-}
+[data-reveal]{opacity:0;transform:translateY(24px);transition:opacity .6s var(--ease), transform .6s var(--ease);}
+[data-reveal].is-visible{opacity:1;transform:translateY(0);}
 
 /* ==========================================================
-   Responsive
+   APP LAYER — Auth, User Dashboard, Admin Panel
    ========================================================== */
+.user-menu{position:relative;}
+.user-menu-btn{
+  display:flex;align-items:center;gap:8px;background:transparent;
+  border:1px solid var(--paper-100);border-radius:var(--radius-pill);
+  padding:5px 12px 5px 5px;cursor:pointer;
+}
+.user-avatar{
+  width:30px;height:30px;border-radius:50%;background:var(--ink-900);color:var(--cyan-400);
+  display:flex;align-items:center;justify-content:center;font-family:var(--font-display);font-weight:700;font-size:.85rem;
+}
+.user-menu-name{font-size:.86rem;font-weight:700;color:var(--ink-900);}
+.user-menu-dropdown{
+  position:absolute;top:calc(100% + 10px);right:0;width:240px;background:var(--paper-0);
+  border:1px solid var(--paper-100);border-radius:var(--radius-md);box-shadow:var(--shadow-lg);
+  padding:14px;opacity:0;transform:translateY(-6px);pointer-events:none;
+  transition:opacity .15s var(--ease), transform .15s var(--ease);z-index:150;
+}
+.user-menu.open .user-menu-dropdown{opacity:1;transform:translateY(0);pointer-events:auto;}
+.user-menu-email{font-size:.8rem;color:var(--steel-500);margin:0 0 10px;word-break:break-all;}
+.user-menu-dropdown a,.user-menu-dropdown button{
+  display:block;width:100%;text-align:left;padding:9px 10px;border-radius:8px;
+  font-size:.88rem;font-weight:600;color:var(--steel-900);background:transparent;border:none;cursor:pointer;font-family:inherit;
+}
+.user-menu-dropdown a:hover,.user-menu-dropdown button:hover{background:var(--paper-50);color:var(--ink-900);}
+.user-menu-dropdown .logout-btn{color:var(--red-400);}
+.user-menu-dropdown hr{border:none;border-top:1px solid var(--paper-100);margin:8px 0;}
+
+.badge{
+  display:inline-flex;align-items:center;gap:5px;font-family:var(--font-mono);
+  font-size:.68rem;font-weight:700;text-transform:uppercase;letter-spacing:.04em;
+  padding:3px 9px;border-radius:var(--radius-pill);
+}
+.badge-admin{background:#241B33;color:#B296F2;}
+.badge-user{background:var(--cyan-900);color:var(--cyan-400);}
+.badge-good{background:var(--green-900);color:var(--green-400);}
+.badge-warn{background:var(--amber-900);color:var(--amber-400);}
+
+.modal-backdrop{
+  position:fixed;inset:0;z-index:300;background:rgba(8,11,15,.6);
+  display:flex;align-items:center;justify-content:center;padding:20px;
+  backdrop-filter:blur(2px);animation:fadeIn .15s var(--ease);
+}
+.modal-backdrop[hidden]{display:none;}
+@keyframes fadeIn{from{opacity:0;}to{opacity:1;}}
+.modal{
+  position:relative;width:100%;max-width:420px;background:var(--paper-0);border-radius:var(--radius-lg);
+  box-shadow:var(--shadow-lg);padding:32px 28px 28px;max-height:88vh;overflow-y:auto;
+  animation:modalIn .2s var(--ease);
+}
+@keyframes modalIn{from{opacity:0;transform:translateY(10px) scale(.98);}to{opacity:1;transform:none;}}
+.modal h3{margin-bottom:18px;font-size:1.25rem;}
+.modal-close{
+  position:absolute;top:16px;right:16px;width:32px;height:32px;border-radius:8px;
+  border:none;background:var(--paper-50);color:var(--steel-500);font-size:1.2rem;line-height:1;cursor:pointer;
+}
+.modal-close:hover{background:var(--cyan-900);color:var(--cyan-400);}
+.modal-tabs{display:flex;gap:4px;background:var(--paper-50);border-radius:10px;padding:4px;margin-bottom:22px;}
+.modal-tab{
+  flex:1;padding:9px;border:none;background:transparent;border-radius:8px;
+  font-weight:700;font-size:.88rem;color:var(--steel-500);cursor:pointer;font-family:inherit;
+  transition:background .15s var(--ease), color .15s var(--ease);
+}
+.modal-tab.active{background:var(--paper-0);color:var(--ink-900);box-shadow:var(--shadow-sm);}
+.modal-form[hidden]{display:none;}
+.form-error{font-size:.82rem;color:var(--red-400);font-weight:700;min-height:1.2em;margin:-4px 0 12px;}
+
+.app-shell{padding:40px 0 100px;background:var(--paper-50);min-height:70vh;}
+.app-shell[hidden]{display:none;}
+.app-shell-inner{display:grid;grid-template-columns:220px 1fr;gap:28px;align-items:start;}
+.app-sidebar{
+  background:var(--paper-0);border:1px solid var(--paper-100);border-radius:var(--radius-lg);
+  padding:18px;position:sticky;top:96px;display:flex;flex-direction:column;gap:16px;
+}
+.app-nav{display:flex;flex-direction:column;gap:4px;}
+.app-nav-btn{
+  text-align:left;padding:10px 12px;border-radius:9px;border:none;background:transparent;font-family:inherit;
+  font-size:.9rem;font-weight:700;color:var(--steel-500);cursor:pointer;
+  transition:background .15s var(--ease), color .15s var(--ease);
+}
+.app-nav-btn:hover{background:var(--paper-50);color:var(--ink-900);}
+.app-nav-btn.active{background:var(--ink-900);color:var(--cyan-400);}
+.app-nav-btn[hidden]{display:none;}
+.app-sidebar-foot{border-top:1px solid var(--paper-100);padding-top:14px;}
+.app-sidebar-foot p{font-size:.78rem;color:var(--steel-500);margin:0 0 6px;word-break:break-all;}
+
+.app-content{min-width:0;}
+.app-panel[hidden]{display:none;}
+.panel-head{display:flex;align-items:center;justify-content:space-between;gap:16px;margin-bottom:20px;flex-wrap:wrap;}
+.panel-head h2,.panel-head h3{margin:0;}
+
+.vehicle-grid{display:grid;grid-template-columns:repeat(auto-fill, minmax(260px,1fr));gap:18px;}
+.vehicle-card{
+  background:var(--paper-0);border:1px solid var(--paper-100);border-radius:var(--radius-lg);
+  padding:22px;cursor:pointer;transition:transform .15s var(--ease), box-shadow .15s var(--ease), border-color .15s var(--ease);
+}
+.vehicle-card:hover{transform:translateY(-3px);box-shadow:var(--shadow-md);border-color:var(--cyan-400);}
+.vehicle-card-top{display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:14px;}
+.vehicle-card h4{margin:0 0 2px;font-size:1.05rem;color:var(--ink-900);font-family:var(--font-display);}
+.vehicle-card .plate{font-size:.78rem;color:var(--steel-300);font-family:var(--font-mono);}
+.vehicle-card-meta{display:flex;gap:16px;font-size:.8rem;color:var(--steel-500);}
+.vehicle-card-meta strong{display:block;color:var(--ink-900);font-family:var(--font-mono);font-size:.92rem;}
+.empty-state{text-align:center;padding:60px 20px;color:var(--steel-300);border:1.5px dashed var(--paper-100);border-radius:var(--radius-lg);background:var(--paper-0);}
+.empty-state p{margin:0 0 16px;}
+
+.vehicle-detail-head{
+  background:var(--paper-0);border:1px solid var(--paper-100);border-radius:var(--radius-lg);
+  padding:22px;margin:16px 0 24px;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:14px;
+}
+.vehicle-detail-head h3{margin:0 0 4px;}
+.vehicle-detail-head p{margin:0;color:var(--steel-500);font-size:.86rem;}
+
+.table-wrap{background:var(--paper-0);border:1px solid var(--paper-100);border-radius:var(--radius-lg);overflow:hidden;}
+.table{width:100%;border-collapse:collapse;font-size:.88rem;}
+.table th{
+  text-align:left;background:var(--paper-50);color:var(--steel-500);font-family:var(--font-mono);
+  font-weight:700;font-size:.7rem;text-transform:uppercase;letter-spacing:.04em;
+  padding:12px 16px;border-bottom:1px solid var(--paper-100);
+}
+.table td{padding:12px 16px;border-bottom:1px solid var(--paper-100);color:var(--steel-900);}
+.table tbody tr:last-child td{border-bottom:none;}
+.table tbody tr:hover{background:var(--paper-50);}
+.table .num{font-family:var(--font-mono);}
+.icon-btn{background:transparent;border:none;cursor:pointer;color:var(--steel-300);padding:4px;border-radius:6px;}
+.icon-btn:hover{color:var(--red-400);background:#FBE3E4;}
+
+.role-select{
+  font-family:inherit;font-size:.82rem;font-weight:700;padding:5px 8px;border-radius:7px;
+  border:1px solid var(--paper-100);background:var(--paper-0);color:var(--ink-900);
+}
+
+.stat-cards{display:grid;grid-template-columns:repeat(4,1fr);gap:16px;margin-bottom:28px;}
+.stat-card{background:var(--paper-0);border:1px solid var(--paper-100);border-radius:var(--radius-lg);padding:20px;}
+.stat-card .num{font-family:var(--font-mono);font-weight:700;font-size:1.65rem;color:var(--ink-900);}
+.stat-card .label{font-size:.8rem;color:var(--steel-500);}
+
+.toast{
+  position:fixed;bottom:24px;left:50%;transform:translateX(-50%) translateY(10px);
+  background:var(--ink-900);color:#fff;padding:12px 20px;border-radius:10px;
+  font-size:.88rem;font-weight:700;box-shadow:var(--shadow-lg);z-index:400;
+  opacity:0;pointer-events:none;transition:opacity .2s var(--ease), transform .2s var(--ease);
+}
+.toast.show{opacity:1;transform:translateX(-50%) translateY(0);}
+.toast.toast-error{background:var(--red-400);}
+
+.loading-row td{text-align:center;color:var(--steel-300);padding:26px;}
+
 @media (max-width:1024px){
   .hero-grid{grid-template-columns:1fr;}
   .hero-visual{order:-1;}
@@ -764,29 +667,25 @@ button{font-family:inherit;}
   .why-visual{order:1;}
   .cta-grid{grid-template-columns:1fr;}
   .feature-grid{grid-template-columns:repeat(2,1fr);}
-  .steps{grid-template-columns:repeat(3,1fr);}
+  .steps{grid-template-columns:repeat(3,1fr);border-top:none;}
+  .step::before{display:none;}
   .pricing-grid{grid-template-columns:1fr;max-width:420px;margin:0 auto;}
   .price-card-featured{transform:none;}
   .footer-top{grid-template-columns:1fr;}
+  .app-shell-inner{grid-template-columns:1fr;}
+  .app-sidebar{position:static;flex-direction:row;flex-wrap:wrap;}
+  .app-nav{flex-direction:row;flex-wrap:wrap;}
 }
 
 @media (max-width:768px){
   .main-nav{
-    position:fixed;
-    top:72px;left:0;right:0;
-    background:#fff;
-    flex-direction:column;
-    align-items:flex-start;
-    gap:0;
-    padding:8px 24px 20px;
-    border-bottom:1px solid var(--line);
-    transform:translateY(-8px);
-    opacity:0;
-    pointer-events:none;
+    position:fixed;top:72px;left:0;right:0;background:var(--paper-0);
+    flex-direction:column;align-items:flex-start;gap:0;padding:8px 24px 20px;
+    border-bottom:1px solid var(--paper-100);transform:translateY(-8px);opacity:0;pointer-events:none;
     transition:opacity .2s var(--ease), transform .2s var(--ease);
   }
   .main-nav.open{opacity:1;transform:translateY(0);pointer-events:auto;}
-  .main-nav .nav-link{width:100%;padding:12px 0;border-bottom:1px solid var(--line);}
+  .main-nav .nav-link{width:100%;padding:12px 0;border-bottom:1px solid var(--paper-100);}
   .nav-toggle{display:flex;}
   .header-actions .btn-ghost{display:none;}
   .feature-grid{grid-template-columns:1fr;}
@@ -794,6 +693,10 @@ button{font-family:inherit;}
   .stat-row{grid-template-columns:1fr 1fr;}
   .section{padding:64px 0;}
   .cta-section{margin:0 12px;padding:56px 0;}
+  .stat-cards{grid-template-columns:1fr 1fr;}
+  .table{font-size:.8rem;}
+  .table th,.table td{padding:9px 10px;}
+  .cluster-dials{grid-template-columns:.68fr 1fr .68fr;}
 }
 
 @media (max-width:480px){
@@ -803,6 +706,11 @@ button{font-family:inherit;}
 }
 
 </style>
+
+<!-- Firebase (Auth + Firestore) — compat SDK, works with plain <script> tags -->
+<script src="https://www.gstatic.com/firebasejs/10.13.0/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.13.0/firebase-auth-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.13.0/firebase-firestore-compat.js"></script>
 </head>
 <body>
 
@@ -819,16 +727,32 @@ button{font-family:inherit;}
     </a>
 
     <nav class="main-nav" id="mainNav" aria-label="Primary">
-      <a href="#features" class="nav-link">Features</a>
-      <a href="#how-it-works" class="nav-link">How It Works</a>
-      <a href="#why" class="nav-link">Why CarCare+</a>
-      <a href="#pricing" class="nav-link">Pricing</a>
-      <a href="#contact" class="nav-link">Contact</a>
+      <a href="#top" class="nav-link nav-home-link" id="navHomeLink" hidden>Home</a>
+      <a href="#features" class="nav-link marketing-link">Features</a>
+      <a href="#how-it-works" class="nav-link marketing-link">How It Works</a>
+      <a href="#why" class="nav-link marketing-link">Why CarCare+</a>
+      <a href="#pricing" class="nav-link marketing-link">Pricing</a>
+      <a href="#contact" class="nav-link marketing-link">Contact</a>
     </nav>
 
     <div class="header-actions">
-      <a href="#login" class="btn btn-ghost">Log In</a>
-      <a href="#signup" class="btn btn-primary">Sign Up</a>
+      <button type="button" class="btn btn-ghost" id="loginBtn">Log In</button>
+      <button type="button" class="btn btn-primary" id="signupBtn">Sign Up</button>
+
+      <div class="user-menu" id="userMenu" hidden>
+        <button type="button" class="user-menu-btn" id="userMenuBtn" aria-expanded="false">
+          <span class="user-avatar" id="userAvatar">U</span>
+          <span class="user-menu-name" id="userMenuName">Account</span>
+        </button>
+        <div class="user-menu-dropdown" id="userMenuDropdown">
+          <p class="user-menu-email" id="userMenuEmail"></p>
+          <a href="#" id="gotoDashboard">My Vehicles</a>
+          <a href="#" id="gotoAdmin" hidden>Admin Panel</a>
+          <hr>
+          <button type="button" class="logout-btn" id="logoutBtn">Log Out</button>
+        </div>
+      </div>
+
       <button class="nav-toggle" id="navToggle" aria-expanded="false" aria-controls="mainNav" aria-label="Toggle menu">
         <span></span><span></span><span></span>
       </button>
@@ -869,60 +793,81 @@ button{font-family:inherit;}
       </div>
 
       <div class="hero-visual" data-reveal>
-        <div class="dash-card" id="dashCard">
-          <div class="dash-topbar">
-            <div class="dash-user">
-              <span class="dash-avatar" aria-hidden="true">R</span>
+        <div class="cluster-panel" id="clusterPanel">
+          <div class="cluster-topbar">
+            <div class="cluster-user">
+              <span class="cluster-avatar" aria-hidden="true">R</span>
               <div>
-                <p class="dash-greet">Hello, Rohan</p>
-                <p class="dash-vehicle">Hyundai Verna 2020 &middot; KA 01 AB 1234</p>
+                <p class="cluster-greet">Hello, Rohan</p>
+                <p class="cluster-vehicle">Hyundai Verna 2020 &middot; KA 01 AB 1234</p>
               </div>
             </div>
-            <span class="dash-bell" aria-hidden="true">
-              <svg width="18" height="18" viewBox="0 0 24 24" fill="none"><path d="M12 3a5 5 0 00-5 5v3.2c0 .6-.2 1.1-.6 1.6L5 15h14l-1.4-2.2a2.4 2.4 0 01-.6-1.6V8a5 5 0 00-5-5z" stroke="currentColor" stroke-width="1.4"/><path d="M9.5 18a2.5 2.5 0 005 0" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/></svg>
+            <span class="cluster-bell" aria-hidden="true">
+              <svg width="17" height="17" viewBox="0 0 24 24" fill="none"><path d="M12 3a5 5 0 00-5 5v3.2c0 .6-.2 1.1-.6 1.6L5 15h14l-1.4-2.2a2.4 2.4 0 01-.6-1.6V8a5 5 0 00-5-5z" stroke="currentColor" stroke-width="1.4"/><path d="M9.5 18a2.5 2.5 0 005 0" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/></svg>
             </span>
           </div>
 
-          <div class="dash-health">
-            <div class="gauge" id="gauge">
-              <svg viewBox="0 0 120 120" width="108" height="108">
-                <circle cx="60" cy="60" r="50" class="gauge-track"/>
-                <circle cx="60" cy="60" r="50" class="gauge-fill" id="gaugeFill"/>
+          <div class="cluster-dials">
+            <!-- Secondary dial: distance to next service -->
+            <div class="cluster-gauge cluster-gauge--sm" data-gauge="service" data-value="1250" data-max="10000" data-invert="true">
+              <svg viewBox="0 0 140 90" class="cluster-gauge-svg">
+                <path class="cluster-track" d="M12,82 A58,58 0 0 1 128,82"/>
+                <path class="cluster-fill cluster-fill--amber" id="fill-service" d="M12,82 A58,58 0 0 1 128,82"/>
+                <line class="cluster-needle" id="needle-service" x1="70" y1="82" x2="70" y2="30"/>
+                <circle class="cluster-pivot" cx="70" cy="82" r="3.5"/>
               </svg>
-              <div class="gauge-label">
-                <span class="gauge-num" id="gaugeNum">0</span>
-                <span class="gauge-of">Health</span>
+              <div class="cluster-readout cluster-readout--sm">
+                <span class="cluster-value" id="val-service">&mdash;</span>
+                <span class="cluster-unit">km to service</span>
               </div>
             </div>
-            <div class="dash-health-copy">
-              <p class="dash-health-status">Overall car health: <strong>Good</strong></p>
-              <p class="dash-health-note">Last scanned 3 days ago</p>
-              <div class="dash-mini-grid">
-                <div><span>Next service</span><strong>in 1,250 km</strong></div>
-                <div><span>Insurance</span><strong>28 days left</strong></div>
-                <div><span>Tyre wear</span><strong class="ok">Good</strong></div>
+
+            <!-- Primary dial: overall health score -->
+            <div class="cluster-gauge cluster-gauge--lg" data-gauge="health" data-value="85" data-max="100">
+              <svg viewBox="0 0 140 90" class="cluster-gauge-svg">
+                <path class="cluster-track" d="M8,84 A62,62 0 0 1 132,84"/>
+                <path class="cluster-fill cluster-fill--green" id="fill-health" d="M8,84 A62,62 0 0 1 132,84"/>
+                <line class="cluster-needle cluster-needle--lg" id="needle-health" x1="70" y1="84" x2="70" y2="26"/>
+                <circle class="cluster-pivot cluster-pivot--lg" cx="70" cy="84" r="4.5"/>
+              </svg>
+              <div class="cluster-readout">
+                <span class="cluster-value cluster-value--lg" id="val-health">0</span>
+                <span class="cluster-unit">Health score</span>
+              </div>
+            </div>
+
+            <!-- Secondary dial: insurance days left -->
+            <div class="cluster-gauge cluster-gauge--sm" data-gauge="insurance" data-value="28" data-max="365" data-invert="true">
+              <svg viewBox="0 0 140 90" class="cluster-gauge-svg">
+                <path class="cluster-track" d="M12,82 A58,58 0 0 1 128,82"/>
+                <path class="cluster-fill cluster-fill--cyan" id="fill-insurance" d="M12,82 A58,58 0 0 1 128,82"/>
+                <line class="cluster-needle" id="needle-insurance" x1="70" y1="82" x2="70" y2="30"/>
+                <circle class="cluster-pivot" cx="70" cy="82" r="3.5"/>
+              </svg>
+              <div class="cluster-readout cluster-readout--sm">
+                <span class="cluster-value" id="val-insurance">&mdash;</span>
+                <span class="cluster-unit">days insurance</span>
               </div>
             </div>
           </div>
 
-          <div class="dash-insight">
-            <span class="dash-insight-tag">AI Insight</span>
+          <div class="cluster-insight">
+            <span class="cluster-insight-tag">AI diagnostic feed</span>
             <p id="typewriter" aria-live="polite"></p>
           </div>
 
-          <div class="dash-activity">
-            <p class="dash-activity-title">Recent activity</p>
-            <div class="dash-activity-item">
+          <div class="cluster-activity">
+            <div class="cluster-activity-item">
               <span class="dot dot-amber" aria-hidden="true"></span>
-              <span>Oil change</span><span class="dash-activity-meta">2,350 km ago</span>
+              <span>Oil change</span><span class="cluster-activity-meta">2,350 km ago</span>
             </div>
-            <div class="dash-activity-item">
+            <div class="cluster-activity-item">
               <span class="dot dot-green" aria-hidden="true"></span>
-              <span>Brake pads inspected</span><span class="dash-activity-meta">12,000 km ago</span>
+              <span>Brake pads inspected</span><span class="cluster-activity-meta">12,000 km ago</span>
             </div>
           </div>
         </div>
-        <div class="dash-glow" aria-hidden="true"></div>
+        <div class="cluster-glow" aria-hidden="true"></div>
       </div>
     </div>
   </section>
@@ -1202,6 +1147,217 @@ button{font-family:inherit;}
 
 </main>
 
+<!-- ============================================================
+     APP SHELL — User Dashboard + Admin Panel (Firebase-backed)
+     Hidden until a user logs in; toggled by js/script.js
+     ============================================================ -->
+<section class="app-shell" id="appShell" hidden>
+  <div class="wrap app-shell-inner">
+
+    <aside class="app-sidebar">
+      <nav class="app-nav">
+        <button type="button" class="app-nav-btn active" data-panel="myVehicles">My Vehicles</button>
+        <button type="button" class="app-nav-btn admin-only" data-panel="adminOverview" hidden>Admin Overview</button>
+        <button type="button" class="app-nav-btn admin-only" data-panel="adminUsers" hidden>Users</button>
+        <button type="button" class="app-nav-btn admin-only" data-panel="adminVehicles" hidden>All Vehicles</button>
+        <button type="button" class="app-nav-btn admin-only" data-panel="adminServices" hidden>Service Records</button>
+      </nav>
+      <div class="app-sidebar-foot">
+        <p id="appUserEmail">&nbsp;</p>
+        <span class="badge badge-user" id="appUserRoleBadge">user</span>
+      </div>
+    </aside>
+
+    <div class="app-content">
+
+      <!-- ---------- USER PANEL: My Vehicles ---------- -->
+      <div class="app-panel" id="panel-myVehicles">
+        <div class="panel-head">
+          <h2>My Vehicles</h2>
+          <button type="button" class="btn btn-primary btn-sm" id="openAddVehicle">+ Add Vehicle</button>
+        </div>
+        <div class="vehicle-grid" id="vehicleGrid">
+          <div class="empty-state" id="vehicleEmptyState">
+            <p>You haven't added a vehicle yet.</p>
+            <button type="button" class="btn btn-primary btn-sm" id="openAddVehicleEmpty">+ Add your first vehicle</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- ---------- USER PANEL: Vehicle detail + service history ---------- -->
+      <div class="app-panel" id="panel-vehicleDetail" hidden>
+        <button type="button" class="btn btn-ghost btn-sm" id="backToVehicles">&larr; Back to vehicles</button>
+        <div class="vehicle-detail-head" id="vehicleDetailHead"></div>
+        <div class="panel-head">
+          <h3>Service history</h3>
+          <button type="button" class="btn btn-primary btn-sm" id="openAddService">+ Log Service</button>
+        </div>
+        <div class="table-wrap">
+          <table class="table">
+            <thead><tr><th>Date</th><th>Type</th><th>Mileage</th><th>Cost</th><th>Notes</th><th></th></tr></thead>
+            <tbody id="serviceTableBody"><tr class="loading-row"><td colspan="6">No service records yet.</td></tr></tbody>
+          </table>
+        </div>
+      </div>
+
+      <!-- ---------- ADMIN PANEL: Overview ---------- -->
+      <div class="app-panel admin-only" id="panel-adminOverview" hidden>
+        <div class="panel-head"><h2>Admin Overview</h2></div>
+        <div class="stat-cards">
+          <div class="stat-card"><div class="num" id="statTotalUsers">0</div><div class="label">Total users</div></div>
+          <div class="stat-card"><div class="num" id="statTotalVehicles">0</div><div class="label">Vehicles tracked</div></div>
+          <div class="stat-card"><div class="num" id="statTotalServices">0</div><div class="label">Service records logged</div></div>
+          <div class="stat-card"><div class="num" id="statTotalAdmins">0</div><div class="label">Admin accounts</div></div>
+        </div>
+      </div>
+
+      <!-- ---------- ADMIN PANEL: Users ---------- -->
+      <div class="app-panel admin-only" id="panel-adminUsers" hidden>
+        <div class="panel-head"><h2>Users</h2></div>
+        <div class="table-wrap">
+          <table class="table">
+            <thead><tr><th>Name</th><th>Email</th><th>Role</th><th>Joined</th></tr></thead>
+            <tbody id="adminUsersBody"><tr class="loading-row"><td colspan="4">Loading users&hellip;</td></tr></tbody>
+          </table>
+        </div>
+      </div>
+
+      <!-- ---------- ADMIN PANEL: All Vehicles ---------- -->
+      <div class="app-panel admin-only" id="panel-adminVehicles" hidden>
+        <div class="panel-head"><h2>All Vehicles</h2></div>
+        <div class="table-wrap">
+          <table class="table">
+            <thead><tr><th>Owner</th><th>Vehicle</th><th>Plate</th><th>Mileage</th></tr></thead>
+            <tbody id="adminVehiclesBody"><tr class="loading-row"><td colspan="4">Loading vehicles&hellip;</td></tr></tbody>
+          </table>
+        </div>
+      </div>
+
+      <!-- ---------- ADMIN PANEL: Service Records ---------- -->
+      <div class="app-panel admin-only" id="panel-adminServices" hidden>
+        <div class="panel-head"><h2>Service Records</h2></div>
+        <div class="table-wrap">
+          <table class="table">
+            <thead><tr><th>Owner</th><th>Vehicle</th><th>Date</th><th>Type</th><th>Cost</th></tr></thead>
+            <tbody id="adminServicesBody"><tr class="loading-row"><td colspan="5">Loading records&hellip;</td></tr></tbody>
+          </table>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- ============ AUTH MODAL (Log In / Sign Up) ============ -->
+<div class="modal-backdrop" id="authModalBackdrop" hidden>
+  <div class="modal" role="dialog" aria-modal="true" aria-labelledby="authModalTitle">
+    <button type="button" class="modal-close" id="authModalClose" aria-label="Close">&times;</button>
+    <h3 id="authModalTitle" style="position:absolute;left:-9999px;">Account</h3>
+
+    <div class="modal-tabs">
+      <button type="button" class="modal-tab active" data-mode="login">Log In</button>
+      <button type="button" class="modal-tab" data-mode="signup">Sign Up</button>
+    </div>
+
+    <form class="modal-form" id="loginForm" novalidate>
+      <div class="form-row">
+        <label for="loginEmail">Email</label>
+        <input type="email" id="loginEmail" required autocomplete="email">
+      </div>
+      <div class="form-row">
+        <label for="loginPassword">Password</label>
+        <input type="password" id="loginPassword" required minlength="6" autocomplete="current-password">
+      </div>
+      <p class="form-error" id="loginError"></p>
+      <button type="submit" class="btn btn-primary btn-block">Log In</button>
+    </form>
+
+    <form class="modal-form" id="signupForm" hidden novalidate>
+      <div class="form-row">
+        <label for="signupName">Full name</label>
+        <input type="text" id="signupName" required autocomplete="name">
+      </div>
+      <div class="form-row">
+        <label for="signupEmail">Email</label>
+        <input type="email" id="signupEmail" required autocomplete="email">
+      </div>
+      <div class="form-row">
+        <label for="signupPassword">Password</label>
+        <input type="password" id="signupPassword" required minlength="6" autocomplete="new-password">
+      </div>
+      <p class="form-error" id="signupError"></p>
+      <button type="submit" class="btn btn-primary btn-block">Create Account</button>
+    </form>
+  </div>
+</div>
+
+<!-- ============ ADD / EDIT VEHICLE MODAL ============ -->
+<div class="modal-backdrop" id="vehicleModalBackdrop" hidden>
+  <div class="modal" role="dialog" aria-modal="true" aria-labelledby="vehicleModalTitle">
+    <button type="button" class="modal-close" id="vehicleModalClose" aria-label="Close">&times;</button>
+    <h3 id="vehicleModalTitle">Add Vehicle</h3>
+    <form class="modal-form" id="vehicleForm" novalidate>
+      <div class="form-row">
+        <label for="vMake">Make</label>
+        <input type="text" id="vMake" required placeholder="e.g. Hyundai">
+      </div>
+      <div class="form-row">
+        <label for="vModel">Model</label>
+        <input type="text" id="vModel" required placeholder="e.g. Verna">
+      </div>
+      <div class="form-row">
+        <label for="vYear">Year</label>
+        <input type="number" id="vYear" required min="1980" max="2100" placeholder="2020">
+      </div>
+      <div class="form-row">
+        <label for="vPlate">Plate number</label>
+        <input type="text" id="vPlate" required placeholder="KA 01 AB 1234">
+      </div>
+      <div class="form-row">
+        <label for="vMileage">Current mileage (km)</label>
+        <input type="number" id="vMileage" required min="0" placeholder="12000">
+      </div>
+      <p class="form-error" id="vehicleError"></p>
+      <button type="submit" class="btn btn-primary btn-block">Save Vehicle</button>
+    </form>
+  </div>
+</div>
+
+<!-- ============ LOG SERVICE MODAL ============ -->
+<div class="modal-backdrop" id="serviceModalBackdrop" hidden>
+  <div class="modal" role="dialog" aria-modal="true" aria-labelledby="serviceModalTitle">
+    <button type="button" class="modal-close" id="serviceModalClose" aria-label="Close">&times;</button>
+    <h3 id="serviceModalTitle">Log Service</h3>
+    <form class="modal-form" id="serviceForm" novalidate>
+      <div class="form-row">
+        <label for="sType">Service type</label>
+        <input type="text" id="sType" required placeholder="e.g. Oil change">
+      </div>
+      <div class="form-row">
+        <label for="sDate">Date</label>
+        <input type="date" id="sDate" required>
+      </div>
+      <div class="form-row">
+        <label for="sMileage">Mileage at service (km)</label>
+        <input type="number" id="sMileage" required min="0">
+      </div>
+      <div class="form-row">
+        <label for="sCost">Cost (&#8377;)</label>
+        <input type="number" id="sCost" required min="0" step="0.01">
+      </div>
+      <div class="form-row">
+        <label for="sNotes">Notes (optional)</label>
+        <input type="text" id="sNotes" placeholder="e.g. Replaced with OEM parts">
+      </div>
+      <p class="form-error" id="serviceError"></p>
+      <button type="submit" class="btn btn-primary btn-block">Save Record</button>
+    </form>
+  </div>
+</div>
+
+<!-- Toast notification -->
+<div class="toast" id="toast" role="status" aria-live="polite"></div>
+
 <!-- ============ FOOTER ============ -->
 <footer class="site-footer">
   <div class="wrap footer-top">
@@ -1317,41 +1473,90 @@ button{font-family:inherit;}
     revealEls.forEach(el => revealObserver.observe(el));
   }
 
-  /* ---------------- Health gauge animation ---------------- */
-  const gaugeFill = document.getElementById("gaugeFill");
-  const gaugeNum = document.getElementById("gaugeNum");
-  const CIRCUMFERENCE = 2 * Math.PI * 50; // r=50
-  const TARGET_SCORE = 85;
+  /* ---------------- Instrument cluster: ignition sweep ---------------- */
+  // Real car clusters sweep every needle to max then settle back to the
+  // actual reading when you turn the key — that's the effect here.
+  const clusterPanel = document.getElementById("clusterPanel");
+  const gaugeEls = document.querySelectorAll(".cluster-gauge");
 
-  function animateGauge() {
-    const offset = CIRCUMFERENCE - (TARGET_SCORE / 100) * CIRCUMFERENCE;
-    gaugeFill.style.strokeDashoffset = String(offset);
+  function setupGauge(el) {
+    const name = el.dataset.gauge;
+    const value = parseFloat(el.dataset.value);
+    const max = parseFloat(el.dataset.max);
+    const fraction = Math.max(0, Math.min(1, value / max));
+
+    const fill = document.getElementById("fill-" + name);
+    const needle = document.getElementById("needle-" + name);
+    const valueEl = document.getElementById("val-" + name);
+    if (!fill || !needle) return;
+
+    const len = fill.getTotalLength();
+    fill.style.strokeDasharray = String(len);
+    fill.style.strokeDashoffset = String(len); // start empty
+
+    const targetAngle = -90 + fraction * 180;
+    const targetOffset = len - fraction * len;
 
     if (reduceMotion) {
-      gaugeNum.textContent = TARGET_SCORE;
+      needle.style.transition = "none";
+      needle.style.transform = `rotate(${targetAngle}deg)`;
+      fill.style.strokeDashoffset = String(targetOffset);
+      if (valueEl) valueEl.textContent = formatGaugeValue(name, value);
       return;
     }
-    const duration = 1400;
-    const start = performance.now();
-    function tick(now) {
-      const p = Math.min((now - start) / duration, 1);
-      const eased = 1 - Math.pow(1 - p, 3);
-      gaugeNum.textContent = Math.round(eased * TARGET_SCORE);
-      if (p < 1) requestAnimationFrame(tick);
+
+    // 1) ignition sweep to max
+    requestAnimationFrame(() => {
+      needle.style.transition = "transform .5s ease-out";
+      needle.style.transform = "rotate(88deg)";
+      fill.style.transition = "stroke-dashoffset .5s ease-out";
+      fill.style.strokeDashoffset = "0";
+    });
+
+    // 2) settle back to the real reading
+    setTimeout(() => {
+      needle.style.transition = "transform 1.3s cubic-bezier(.2,1.3,.3,1)";
+      needle.style.transform = `rotate(${targetAngle}deg)`;
+      fill.style.transition = "stroke-dashoffset 1.3s cubic-bezier(.2,1.3,.3,1)";
+      fill.style.strokeDashoffset = String(targetOffset);
+    }, 550);
+
+    // 3) count the number up in sync
+    if (valueEl) {
+      const duration = 1300;
+      const start = performance.now();
+      const startDelay = 550;
+      function tick(now) {
+        const elapsed = now - start - startDelay;
+        if (elapsed < 0) { requestAnimationFrame(tick); return; }
+        const p = Math.min(elapsed / duration, 1);
+        const eased = 1 - Math.pow(1 - p, 3);
+        valueEl.textContent = formatGaugeValue(name, value * eased);
+        if (p < 1) requestAnimationFrame(tick);
+        else valueEl.textContent = formatGaugeValue(name, value);
+      }
+      requestAnimationFrame(tick);
     }
-    requestAnimationFrame(tick);
   }
-  // Run once dashboard is in view
-  const dashCard = document.getElementById("dashCard");
-  const gaugeObserver = new IntersectionObserver((entries) => {
+
+  function formatGaugeValue(name, value) {
+    if (name === "health") return String(Math.round(value));
+    return Math.round(value).toLocaleString("en-IN");
+  }
+
+  function runIgnitionSweep() {
+    gaugeEls.forEach(setupGauge);
+  }
+
+  const clusterObserver = new IntersectionObserver((entries) => {
     entries.forEach(entry => {
       if (entry.isIntersecting) {
-        animateGauge();
-        gaugeObserver.disconnect();
+        runIgnitionSweep();
+        clusterObserver.disconnect();
       }
     });
   }, { threshold: 0.4 });
-  if (dashCard) gaugeObserver.observe(dashCard);
+  if (clusterPanel) clusterObserver.observe(clusterPanel);
 
   /* ---------------- Typewriter AI insight ---------------- */
   const messages = [
@@ -1449,6 +1654,576 @@ button{font-family:inherit;}
   /* ---------------- Footer year ---------------- */
   const yearEl = document.getElementById("year");
   if (yearEl) yearEl.textContent = new Date().getFullYear();
+
+})();
+
+</script>
+<script>
+/* ============================================================
+   CarCare+ — Firebase app layer
+   Auth (email/password) + Firestore database for:
+     users/{uid}            -> profile + role ("user" | "admin")
+     vehicles/{id}           -> owned by a user
+     serviceRecords/{id}     -> belongs to a vehicle + owner
+
+   SETUP REQUIRED: paste your own Firebase project config below.
+   See README.md → "Firebase setup" for step-by-step instructions.
+   ============================================================ */
+
+// ---------------------------------------------------------------
+// 1. YOUR FIREBASE CONFIG — replace with values from the Firebase
+//    console (Project settings → General → Your apps → SDK setup).
+// ---------------------------------------------------------------
+const firebaseConfig = {
+  apiKey: "YOUR_API_KEY",
+  authDomain: "YOUR_PROJECT_ID.firebaseapp.com",
+  projectId: "YOUR_PROJECT_ID",
+  storageBucket: "YOUR_PROJECT_ID.appspot.com",
+  messagingSenderId: "YOUR_SENDER_ID",
+  appId: "YOUR_APP_ID"
+};
+
+(() => {
+  "use strict";
+
+  // Guard: if the config hasn't been filled in, tell the developer
+  // clearly instead of throwing a cryptic Firebase error.
+  if (firebaseConfig.apiKey === "YOUR_API_KEY") {
+    console.warn(
+      "[CarCare+] Firebase config is still a placeholder. " +
+      "Auth/database features are disabled until you paste your " +
+      "real config into js/firebase-app.js. See README.md."
+    );
+    document.addEventListener("DOMContentLoaded", () => {
+      const loginBtn = document.getElementById("loginBtn");
+      const signupBtn = document.getElementById("signupBtn");
+      [loginBtn, signupBtn].forEach(btn => {
+        if (!btn) return;
+        btn.addEventListener("click", () => {
+          alert(
+            "This demo needs a Firebase project connected.\n\n" +
+            "Open js/firebase-app.js and paste your Firebase config " +
+            "(see README.md → Firebase setup) to enable real accounts " +
+            "and the database."
+          );
+        });
+      });
+    });
+    return; // stop here — nothing else in this file will run
+  }
+
+  firebase.initializeApp(firebaseConfig);
+  const auth = firebase.auth();
+  const db = firebase.firestore();
+
+  // ---------------------------------------------------------------
+  // State
+  // ---------------------------------------------------------------
+  const state = {
+    user: null,          // firebase auth user object
+    role: "user",         // "user" | "admin"
+    vehicles: [],          // cached vehicles for the logged-in user
+    selectedVehicleId: null,
+    unsub: {              // active Firestore listener unsubscribers
+      userDoc: null,
+      vehicles: null,
+      services: null,
+      adminUsers: null,
+      adminVehicles: null,
+      adminServices: null
+    }
+  };
+
+  // ---------------------------------------------------------------
+  // Small DOM helpers
+  // ---------------------------------------------------------------
+  const $ = (id) => document.getElementById(id);
+  const esc = (str) => String(str ?? "").replace(/[&<>"']/g, (c) => (
+    { "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]
+  ));
+  const fmtMoney = (n) => "₹" + Number(n || 0).toLocaleString("en-IN");
+  const fmtDate = (d) => {
+    if (!d) return "—";
+    const dateObj = typeof d === "string" ? new Date(d) : d.toDate ? d.toDate() : d;
+    return dateObj.toLocaleDateString("en-IN", { day: "2-digit", month: "short", year: "numeric" });
+  };
+
+  let toastTimer = null;
+  function toast(message, isError = false) {
+    const el = $("toast");
+    if (!el) return;
+    el.textContent = message;
+    el.classList.toggle("toast-error", isError);
+    el.classList.add("show");
+    clearTimeout(toastTimer);
+    toastTimer = setTimeout(() => el.classList.remove("show"), 3200);
+  }
+
+  // ---------------------------------------------------------------
+  // Modal helpers (auth / vehicle / service)
+  // ---------------------------------------------------------------
+  function openModal(backdropId) { $(backdropId).hidden = false; document.body.style.overflow = "hidden"; }
+  function closeModal(backdropId) { $(backdropId).hidden = true; document.body.style.overflow = ""; }
+
+  function wireModalClose(backdropId, closeBtnId) {
+    const backdrop = $(backdropId);
+    $(closeBtnId).addEventListener("click", () => closeModal(backdropId));
+    backdrop.addEventListener("click", (e) => { if (e.target === backdrop) closeModal(backdropId); });
+    document.addEventListener("keydown", (e) => {
+      if (e.key === "Escape" && !backdrop.hidden) closeModal(backdropId);
+    });
+  }
+
+  // ============================================================
+  // AUTH MODAL
+  // ============================================================
+  wireModalClose("authModalBackdrop", "authModalClose");
+
+  $("loginBtn").addEventListener("click", () => { switchAuthTab("login"); openModal("authModalBackdrop"); });
+  $("signupBtn").addEventListener("click", () => { switchAuthTab("signup"); openModal("authModalBackdrop"); });
+
+  document.querySelectorAll(".modal-tab").forEach(tab => {
+    tab.addEventListener("click", () => switchAuthTab(tab.dataset.mode));
+  });
+
+  function switchAuthTab(mode) {
+    document.querySelectorAll(".modal-tab").forEach(t => t.classList.toggle("active", t.dataset.mode === mode));
+    $("loginForm").hidden = mode !== "login";
+    $("signupForm").hidden = mode !== "signup";
+    $("loginError").textContent = "";
+    $("signupError").textContent = "";
+  }
+
+  $("loginForm").addEventListener("submit", async (e) => {
+    e.preventDefault();
+    const email = $("loginEmail").value.trim();
+    const password = $("loginPassword").value;
+    $("loginError").textContent = "";
+    try {
+      await auth.signInWithEmailAndPassword(email, password);
+      closeModal("authModalBackdrop");
+      e.target.reset();
+      toast("Welcome back!");
+    } catch (err) {
+      $("loginError").textContent = friendlyAuthError(err);
+    }
+  });
+
+  $("signupForm").addEventListener("submit", async (e) => {
+    e.preventDefault();
+    const name = $("signupName").value.trim();
+    const email = $("signupEmail").value.trim();
+    const password = $("signupPassword").value;
+    $("signupError").textContent = "";
+    try {
+      const cred = await auth.createUserWithEmailAndPassword(email, password);
+      await cred.user.updateProfile({ displayName: name });
+      // Create the Firestore profile doc. Role defaults to "user" —
+      // promote to "admin" from the Firebase console or the Admin
+      // Panel (see README.md → "Creating your first admin").
+      await db.collection("users").doc(cred.user.uid).set({
+        name,
+        email,
+        role: "user",
+        createdAt: firebase.firestore.FieldValue.serverTimestamp()
+      });
+      closeModal("authModalBackdrop");
+      e.target.reset();
+      toast("Account created — welcome to CarCare+!");
+    } catch (err) {
+      $("signupError").textContent = friendlyAuthError(err);
+    }
+  });
+
+  function friendlyAuthError(err) {
+    const map = {
+      "auth/email-already-in-use": "That email is already registered — try logging in instead.",
+      "auth/invalid-email": "That doesn't look like a valid email address.",
+      "auth/weak-password": "Password should be at least 6 characters.",
+      "auth/user-not-found": "No account found with that email.",
+      "auth/wrong-password": "Incorrect password.",
+      "auth/invalid-credential": "Incorrect email or password."
+    };
+    return map[err.code] || err.message;
+  }
+
+  $("logoutBtn").addEventListener("click", async () => {
+    await auth.signOut();
+    $("userMenu").classList.remove("open");
+    toast("Logged out");
+  });
+
+  // ============================================================
+  // USER MENU dropdown
+  // ============================================================
+  $("userMenuBtn").addEventListener("click", () => {
+    const menu = $("userMenu");
+    const isOpen = menu.classList.toggle("open");
+    $("userMenuBtn").setAttribute("aria-expanded", String(isOpen));
+  });
+  document.addEventListener("click", (e) => {
+    const menu = $("userMenu");
+    if (!menu.contains(e.target)) menu.classList.remove("open");
+  });
+
+  // ============================================================
+  // NAV: switch between marketing site and app shell
+  // ============================================================
+  function showApp() {
+    $("main").hidden = true;
+    $("appShell").hidden = false;
+    document.querySelectorAll(".marketing-link").forEach(l => l.hidden = true);
+    $("navHomeLink").hidden = false;
+    window.scrollTo({ top: 0, behavior: "instant" in window ? "instant" : "auto" });
+  }
+  function showMarketing() {
+    $("appShell").hidden = true;
+    $("main").hidden = false;
+    document.querySelectorAll(".marketing-link").forEach(l => l.hidden = false);
+    $("navHomeLink").hidden = true;
+  }
+
+  $("navHomeLink").addEventListener("click", (e) => { e.preventDefault(); showMarketing(); });
+  $("gotoDashboard").addEventListener("click", (e) => {
+    e.preventDefault();
+    showApp();
+    switchAppPanel("myVehicles");
+    $("userMenu").classList.remove("open");
+  });
+  $("gotoAdmin").addEventListener("click", (e) => {
+    e.preventDefault();
+    showApp();
+    switchAppPanel("adminOverview");
+    $("userMenu").classList.remove("open");
+  });
+
+  // ============================================================
+  // APP SIDEBAR — panel switching
+  // ============================================================
+  document.querySelectorAll(".app-nav-btn").forEach(btn => {
+    btn.addEventListener("click", () => switchAppPanel(btn.dataset.panel));
+  });
+
+  function switchAppPanel(panelKey) {
+    document.querySelectorAll(".app-nav-btn").forEach(b => b.classList.toggle("active", b.dataset.panel === panelKey));
+    document.querySelectorAll(".app-panel").forEach(p => p.hidden = true);
+    const panel = $("panel-" + panelKey);
+    if (panel) panel.hidden = false;
+
+    if (panelKey === "adminOverview") loadAdminOverview();
+    if (panelKey === "adminUsers") loadAdminUsers();
+    if (panelKey === "adminVehicles") loadAdminVehicles();
+    if (panelKey === "adminServices") loadAdminServices();
+  }
+
+  $("backToVehicles").addEventListener("click", () => switchAppPanel("myVehicles"));
+
+  // ============================================================
+  // AUTH STATE — the source of truth for the whole app layer
+  // ============================================================
+  auth.onAuthStateChanged(async (user) => {
+    // Tear down any listeners from a previous session first
+    Object.keys(state.unsub).forEach(k => { if (state.unsub[k]) { state.unsub[k](); state.unsub[k] = null; } });
+
+    if (!user) {
+      state.user = null;
+      state.role = "user";
+      $("loginBtn").hidden = false;
+      $("signupBtn").hidden = false;
+      $("userMenu").hidden = true;
+      $("gotoAdmin").hidden = true;
+      showMarketing();
+      return;
+    }
+
+    state.user = user;
+    $("loginBtn").hidden = true;
+    $("signupBtn").hidden = true;
+    $("userMenu").hidden = false;
+    $("userMenuEmail").textContent = user.email;
+    $("userMenuName").textContent = (user.displayName || user.email).split(" ")[0];
+    $("userAvatar").textContent = (user.displayName || user.email).charAt(0).toUpperCase();
+    $("appUserEmail").textContent = user.email;
+
+    // Live-listen to this user's profile doc for their role
+    state.unsub.userDoc = db.collection("users").doc(user.uid).onSnapshot((doc) => {
+      const data = doc.data();
+      state.role = (data && data.role) || "user";
+      const isAdmin = state.role === "admin";
+      $("appUserRoleBadge").textContent = state.role;
+      $("appUserRoleBadge").className = "badge " + (isAdmin ? "badge-admin" : "badge-user");
+      $("gotoAdmin").hidden = !isAdmin;
+      document.querySelectorAll(".admin-only").forEach(el => { el.hidden = !isAdmin; });
+    }, (err) => console.error("user doc listener error:", err));
+
+    listenUserVehicles(user.uid);
+  });
+
+  // ============================================================
+  // VEHICLES (user-owned)
+  // ============================================================
+  wireModalClose("vehicleModalBackdrop", "vehicleModalClose");
+  $("openAddVehicle").addEventListener("click", () => openVehicleModal());
+  $("openAddVehicleEmpty").addEventListener("click", () => openVehicleModal());
+
+  function openVehicleModal() {
+    $("vehicleForm").reset();
+    $("vehicleError").textContent = "";
+    openModal("vehicleModalBackdrop");
+  }
+
+  $("vehicleForm").addEventListener("submit", async (e) => {
+    e.preventDefault();
+    if (!state.user) return;
+    const payload = {
+      ownerId: state.user.uid,
+      make: $("vMake").value.trim(),
+      model: $("vModel").value.trim(),
+      year: Number($("vYear").value),
+      plate: $("vPlate").value.trim(),
+      mileage: Number($("vMileage").value),
+      createdAt: firebase.firestore.FieldValue.serverTimestamp()
+    };
+    try {
+      await db.collection("vehicles").add(payload);
+      closeModal("vehicleModalBackdrop");
+      toast("Vehicle added");
+    } catch (err) {
+      $("vehicleError").textContent = err.message;
+    }
+  });
+
+  function listenUserVehicles(uid) {
+    state.unsub.vehicles = db.collection("vehicles")
+      .where("ownerId", "==", uid)
+      .onSnapshot((snap) => {
+        state.vehicles = snap.docs.map(d => ({ id: d.id, ...d.data() }));
+        renderVehicleGrid();
+      }, (err) => console.error("vehicles listener error:", err));
+  }
+
+  function renderVehicleGrid() {
+    const grid = $("vehicleGrid");
+    const empty = $("vehicleEmptyState");
+    grid.querySelectorAll(".vehicle-card").forEach(el => el.remove());
+
+    if (state.vehicles.length === 0) {
+      empty.hidden = false;
+      return;
+    }
+    empty.hidden = true;
+
+    state.vehicles.forEach(v => {
+      const card = document.createElement("article");
+      card.className = "vehicle-card";
+      card.innerHTML = `
+        <div class="vehicle-card-top">
+          <div>
+            <h4>${esc(v.make)} ${esc(v.model)}</h4>
+            <span class="plate">${esc(v.plate)} &middot; ${esc(v.year)}</span>
+          </div>
+        </div>
+        <div class="vehicle-card-meta">
+          <div><strong>${Number(v.mileage || 0).toLocaleString("en-IN")} km</strong>odometer</div>
+        </div>
+      `;
+      card.addEventListener("click", () => openVehicleDetail(v.id));
+      grid.appendChild(card);
+    });
+  }
+
+  function openVehicleDetail(vehicleId) {
+    state.selectedVehicleId = vehicleId;
+    const v = state.vehicles.find(x => x.id === vehicleId);
+    if (!v) return;
+
+    document.querySelectorAll(".app-panel").forEach(p => p.hidden = true);
+    $("panel-vehicleDetail").hidden = false;
+
+    $("vehicleDetailHead").innerHTML = `
+      <div>
+        <h3>${esc(v.make)} ${esc(v.model)} (${esc(v.year)})</h3>
+        <p>${esc(v.plate)} &middot; ${Number(v.mileage || 0).toLocaleString("en-IN")} km on the odometer</p>
+      </div>
+    `;
+
+    if (state.unsub.services) state.unsub.services();
+    state.unsub.services = db.collection("serviceRecords")
+      .where("vehicleId", "==", vehicleId)
+      .onSnapshot((snap) => {
+        const records = snap.docs.map(d => ({ id: d.id, ...d.data() }))
+          .sort((a, b) => (b.date || "").localeCompare(a.date || ""));
+        renderServiceTable(records);
+      }, (err) => console.error("services listener error:", err));
+  }
+
+  function renderServiceTable(records) {
+    const tbody = $("serviceTableBody");
+    if (records.length === 0) {
+      tbody.innerHTML = `<tr class="loading-row"><td colspan="6">No service records yet.</td></tr>`;
+      return;
+    }
+    tbody.innerHTML = records.map(r => `
+      <tr>
+        <td>${fmtDate(r.date)}</td>
+        <td>${esc(r.type)}</td>
+        <td class="num">${Number(r.mileageAtService || 0).toLocaleString("en-IN")} km</td>
+        <td class="num">${fmtMoney(r.cost)}</td>
+        <td>${esc(r.notes || "—")}</td>
+        <td><button class="icon-btn" title="Delete record" data-id="${r.id}" aria-label="Delete record">&times;</button></td>
+      </tr>
+    `).join("");
+
+    tbody.querySelectorAll(".icon-btn").forEach(btn => {
+      btn.addEventListener("click", async () => {
+        if (!confirm("Delete this service record?")) return;
+        await db.collection("serviceRecords").doc(btn.dataset.id).delete();
+        toast("Record deleted");
+      });
+    });
+  }
+
+  // ============================================================
+  // SERVICE RECORDS
+  // ============================================================
+  wireModalClose("serviceModalBackdrop", "serviceModalClose");
+  $("openAddService").addEventListener("click", () => {
+    $("serviceForm").reset();
+    $("serviceError").textContent = "";
+    openModal("serviceModalBackdrop");
+  });
+
+  $("serviceForm").addEventListener("submit", async (e) => {
+    e.preventDefault();
+    if (!state.user || !state.selectedVehicleId) return;
+    const payload = {
+      vehicleId: state.selectedVehicleId,
+      ownerId: state.user.uid,
+      type: $("sType").value.trim(),
+      date: $("sDate").value,
+      mileageAtService: Number($("sMileage").value),
+      cost: Number($("sCost").value),
+      notes: $("sNotes").value.trim(),
+      createdAt: firebase.firestore.FieldValue.serverTimestamp()
+    };
+    try {
+      await db.collection("serviceRecords").add(payload);
+      closeModal("serviceModalBackdrop");
+      toast("Service logged");
+    } catch (err) {
+      $("serviceError").textContent = err.message;
+    }
+  });
+
+  // ============================================================
+  // ADMIN PANEL
+  // ============================================================
+  function loadAdminOverview() {
+    Promise.all([
+      db.collection("users").get(),
+      db.collection("vehicles").get(),
+      db.collection("serviceRecords").get()
+    ]).then(([usersSnap, vehiclesSnap, servicesSnap]) => {
+      const admins = usersSnap.docs.filter(d => d.data().role === "admin").length;
+      $("statTotalUsers").textContent = usersSnap.size;
+      $("statTotalVehicles").textContent = vehiclesSnap.size;
+      $("statTotalServices").textContent = servicesSnap.size;
+      $("statTotalAdmins").textContent = admins;
+    }).catch(err => console.error("admin overview error:", err));
+  }
+
+  function loadAdminUsers() {
+    if (state.unsub.adminUsers) return; // already listening
+    state.unsub.adminUsers = db.collection("users").onSnapshot((snap) => {
+      const rows = snap.docs.map(d => ({ id: d.id, ...d.data() }));
+      $("adminUsersBody").innerHTML = rows.map(u => `
+        <tr>
+          <td>${esc(u.name || "—")}</td>
+          <td>${esc(u.email)}</td>
+          <td>
+            <select class="role-select" data-uid="${u.id}">
+              <option value="user" ${u.role === "user" ? "selected" : ""}>user</option>
+              <option value="admin" ${u.role === "admin" ? "selected" : ""}>admin</option>
+            </select>
+          </td>
+          <td>${fmtDate(u.createdAt)}</td>
+        </tr>
+      `).join("") || `<tr class="loading-row"><td colspan="4">No users yet.</td></tr>`;
+
+      $("adminUsersBody").querySelectorAll(".role-select").forEach(sel => {
+        sel.addEventListener("change", async () => {
+          await db.collection("users").doc(sel.dataset.uid).update({ role: sel.value });
+          toast("Role updated");
+        });
+      });
+    }, (err) => console.error("admin users listener error:", err));
+  }
+
+  function loadAdminVehicles() {
+    if (state.unsub.adminVehicles) return;
+    state.unsub.adminVehicles = db.collection("vehicles").onSnapshot(async (snap) => {
+      const vehicles = snap.docs.map(d => ({ id: d.id, ...d.data() }));
+      const ownerIds = [...new Set(vehicles.map(v => v.ownerId))];
+      const ownerMap = await fetchUsersMap(ownerIds);
+
+      $("adminVehiclesBody").innerHTML = vehicles.map(v => `
+        <tr>
+          <td>${esc(ownerMap[v.ownerId] || v.ownerId)}</td>
+          <td>${esc(v.make)} ${esc(v.model)} (${esc(v.year)})</td>
+          <td>${esc(v.plate)}</td>
+          <td class="num">${Number(v.mileage || 0).toLocaleString("en-IN")} km</td>
+        </tr>
+      `).join("") || `<tr class="loading-row"><td colspan="4">No vehicles yet.</td></tr>`;
+    }, (err) => console.error("admin vehicles listener error:", err));
+  }
+
+  function loadAdminServices() {
+    if (state.unsub.adminServices) return;
+    state.unsub.adminServices = db.collection("serviceRecords").onSnapshot(async (snap) => {
+      const records = snap.docs.map(d => ({ id: d.id, ...d.data() }))
+        .sort((a, b) => (b.date || "").localeCompare(a.date || ""));
+      const ownerIds = [...new Set(records.map(r => r.ownerId))];
+      const vehicleIds = [...new Set(records.map(r => r.vehicleId))];
+      const [ownerMap, vehicleMap] = await Promise.all([
+        fetchUsersMap(ownerIds),
+        fetchVehiclesMap(vehicleIds)
+      ]);
+
+      $("adminServicesBody").innerHTML = records.map(r => `
+        <tr>
+          <td>${esc(ownerMap[r.ownerId] || r.ownerId)}</td>
+          <td>${esc(vehicleMap[r.vehicleId] || r.vehicleId)}</td>
+          <td>${fmtDate(r.date)}</td>
+          <td>${esc(r.type)}</td>
+          <td class="num">${fmtMoney(r.cost)}</td>
+        </tr>
+      `).join("") || `<tr class="loading-row"><td colspan="5">No service records yet.</td></tr>`;
+    }, (err) => console.error("admin services listener error:", err));
+  }
+
+  const usersMapCache = {};
+  async function fetchUsersMap(uids) {
+    const missing = uids.filter(id => id && !usersMapCache[id]);
+    await Promise.all(missing.map(async (id) => {
+      const doc = await db.collection("users").doc(id).get();
+      usersMapCache[id] = doc.exists ? (doc.data().name || doc.data().email) : id;
+    }));
+    const map = {};
+    uids.forEach(id => { map[id] = usersMapCache[id]; });
+    return map;
+  }
+
+  const vehiclesMapCache = {};
+  async function fetchVehiclesMap(ids) {
+    const missing = ids.filter(id => id && !vehiclesMapCache[id]);
+    await Promise.all(missing.map(async (id) => {
+      const doc = await db.collection("vehicles").doc(id).get();
+      vehiclesMapCache[id] = doc.exists ? `${doc.data().make} ${doc.data().model}` : id;
+    }));
+    const map = {};
+    ids.forEach(id => { map[id] = vehiclesMapCache[id]; });
+    return map;
+  }
 
 })();
 
