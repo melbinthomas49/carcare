@@ -478,7 +478,11 @@ button{font-family:inherit;}
   transition:border-color .15s var(--ease), box-shadow .15s var(--ease);
 }
 .form-row input:focus{border-color:var(--cyan-400);outline:none;box-shadow:0 0 0 3px var(--cyan-900);background:#fff;}
-.form-row input:invalid:not(:placeholder-shown){border-color:var(--red-400);}
+.form-row input:user-invalid,.form-row select:user-invalid,.form-row textarea:user-invalid{border-color:var(--red-400);}
+.link-btn{background:none;border:0;padding:0;color:var(--blue-500,#2563eb);font:inherit;font-size:.85rem;cursor:pointer;text-decoration:underline;align-self:flex-end;}
+.form-success{color:var(--green-500,#16a34a);font-size:.85rem;min-height:1em;margin:0;}
+.vehicle-detail-actions{display:flex;gap:8px;flex-wrap:wrap;margin:8px 0 16px;}
+.btn-danger-ghost{color:var(--red-500,#dc2626)!important;}
 .form-note{margin:12px 0 0;font-size:.84rem;text-align:center;min-height:1.2em;color:var(--green-400);font-weight:700;}
 
 /* ==========================================================
@@ -1443,6 +1447,10 @@ textarea:focus{border-color:var(--cyan-400);outline:none;box-shadow:0 0 0 3px va
       <div class="app-panel" id="panel-vehicleDetail" hidden>
         <button type="button" class="btn btn-ghost btn-sm" id="backToVehicles">&larr; Back to vehicles</button>
         <div class="vehicle-detail-head" id="vehicleDetailHead"></div>
+        <div class="vehicle-detail-actions">
+          <button type="button" class="btn btn-outline btn-sm" id="editVehicleBtn">Edit vehicle / update odometer</button>
+          <button type="button" class="btn btn-ghost btn-sm btn-danger-ghost" id="deleteVehicleBtn">Delete vehicle</button>
+        </div>
         <div class="panel-head">
           <h3>Service history</h3>
           <button type="button" class="btn btn-primary btn-sm" id="openAddService">+ Log Service</button>
@@ -1521,7 +1529,7 @@ textarea:focus{border-color:var(--cyan-400);outline:none;box-shadow:0 0 0 3px va
 
           <div class="form-row">
             <label for="dDescription">Describe it in your own words</label>
-            <textarea id="dDescription" rows="3" required placeholder="e.g. A knocking sound from the front-left when turning, gets louder at higher speed..."></textarea>
+            <textarea id="dDescription" rows="3" placeholder="e.g. A knocking sound from the front-left when turning, gets louder at higher speed..."></textarea>
           </div>
 
           <div class="form-row" id="warningLightPhotoRow" hidden>
@@ -1668,7 +1676,9 @@ textarea:focus{border-color:var(--cyan-400);outline:none;box-shadow:0 0 0 3px va
         <label for="loginPassword">Password</label>
         <input type="password" id="loginPassword" required minlength="6" autocomplete="current-password">
       </div>
+      <button type="button" class="link-btn" id="forgotPasswordBtn">Forgot password?</button>
       <p class="form-error" id="loginError"></p>
+      <p class="form-success" id="loginInfo"></p>
       <button type="submit" class="btn btn-primary btn-block">Log In</button>
     </form>
 
@@ -1718,7 +1728,7 @@ textarea:focus{border-color:var(--cyan-400);outline:none;box-shadow:0 0 0 3px va
         <input type="number" id="vMileage" required min="0" placeholder="12000">
       </div>
       <p class="form-error" id="vehicleError"></p>
-      <button type="submit" class="btn btn-primary btn-block">Save Vehicle</button>
+      <button type="submit" class="btn btn-primary btn-block" id="vehicleSubmitBtn">Save Vehicle</button>
     </form>
   </div>
 </div>
@@ -2342,12 +2352,77 @@ const GEMINI_MODEL = "gemini-2.5-flash";
     tab.addEventListener("click", () => switchAuthTab(tab.dataset.mode));
   });
 
+  // Forms use `novalidate` so we can style errors ourselves — but that also
+  // means the browser no longer blocks empty/invalid submits. This capture-
+  // phase listener runs BEFORE each form's own submit handler and stops it
+  // if any required field is missing or invalid.
+  document.addEventListener("submit", (e) => {
+    const form = e.target;
+    if (!(form instanceof HTMLFormElement) || form.id === "contactForm") return;
+    if (!form.checkValidity()) {
+      e.preventDefault();
+      e.stopImmediatePropagation();
+      form.reportValidity();
+    }
+  }, true);
+
+  function openAuth(mode, prefill) {
+    if (state.user) { showApp(); switchAppPanel("myVehicles"); return; }
+    switchAuthTab(mode);
+    if (prefill) {
+      if (prefill.name) $("signupName").value = prefill.name;
+      if (prefill.email) { $("signupEmail").value = prefill.email; $("loginEmail").value = prefill.email; }
+    }
+    openModal("authModalBackdrop");
+    setTimeout(() => { const f = $(mode === "login" ? "loginEmail" : (prefill && prefill.name ? "signupPassword" : "signupName")); if (f) f.focus(); }, 50);
+  }
+
+  // "Get Started" / "Start Free Trial" CTAs used to point at a #signup anchor
+  // that doesn't exist — wire them to the real sign-up modal.
+  document.querySelectorAll('a[href="#signup"]').forEach(a => {
+    a.addEventListener("click", (e) => { e.preventDefault(); openAuth("signup"); });
+  });
+
+  // The contact-section form used to only show a fake "check your inbox"
+  // message. Hand its name/email to the real sign-up flow instead.
+  const contactForm = $("contactForm");
+  if (contactForm) {
+    contactForm.addEventListener("submit", (e) => {
+      e.preventDefault();
+      e.stopImmediatePropagation(); // skip the old front-end-only handler
+      if (!contactForm.checkValidity()) { contactForm.reportValidity(); return; }
+      openAuth("signup", { name: $("cf-name").value.trim(), email: $("cf-email").value.trim() });
+    }, true);
+  }
+
+  $("forgotPasswordBtn").addEventListener("click", async () => {
+    const email = $("loginEmail").value.trim();
+    $("loginError").textContent = "";
+    $("loginInfo").textContent = "";
+    if (!email) { $("loginError").textContent = "Enter your email above first, then click \u201cForgot password?\u201d."; $("loginEmail").focus(); return; }
+    try {
+      await auth.sendPasswordResetEmail(email);
+      $("loginInfo").textContent = "If an account exists for " + email + ", a reset link is on its way. Check your inbox (and spam).";
+    } catch (err) {
+      $("loginError").textContent = friendlyAuthError(err);
+    }
+  });
+
+  function setBusy(form, busy, label) {
+    const btn = form.querySelector('button[type="submit"]');
+    if (!btn) return;
+    if (busy) { btn.dataset.label = btn.textContent; btn.textContent = label || "Please wait\u2026"; }
+    else if (btn.dataset.label) { btn.textContent = btn.dataset.label; }
+    btn.disabled = busy;
+  }
+
   function switchAuthTab(mode) {
     document.querySelectorAll(".modal-tab").forEach(t => t.classList.toggle("active", t.dataset.mode === mode));
     $("loginForm").hidden = mode !== "login";
     $("signupForm").hidden = mode !== "signup";
     $("loginError").textContent = "";
     $("signupError").textContent = "";
+    if ($("loginInfo")) $("loginInfo").textContent = "";
   }
 
   $("loginForm").addEventListener("submit", async (e) => {
@@ -2355,13 +2430,19 @@ const GEMINI_MODEL = "gemini-2.5-flash";
     const email = $("loginEmail").value.trim();
     const password = $("loginPassword").value;
     $("loginError").textContent = "";
+    $("loginInfo").textContent = "";
+    setBusy(e.target, true, "Logging in\u2026");
     try {
       await auth.signInWithEmailAndPassword(email, password);
       closeModal("authModalBackdrop");
       e.target.reset();
+      showApp();
+      switchAppPanel("myVehicles");
       toast("Welcome back!");
     } catch (err) {
       $("loginError").textContent = friendlyAuthError(err);
+    } finally {
+      setBusy(e.target, false);
     }
   });
 
@@ -2371,6 +2452,8 @@ const GEMINI_MODEL = "gemini-2.5-flash";
     const email = $("signupEmail").value.trim();
     const password = $("signupPassword").value;
     $("signupError").textContent = "";
+    if (!name) { $("signupError").textContent = "Please enter your name."; return; }
+    setBusy(e.target, true, "Creating account\u2026");
     try {
       const cred = await auth.createUserWithEmailAndPassword(email, password);
       await cred.user.updateProfile({ displayName: name });
@@ -2383,11 +2466,19 @@ const GEMINI_MODEL = "gemini-2.5-flash";
         role: "user",
         createdAt: firebase.firestore.FieldValue.serverTimestamp()
       });
+      // onAuthStateChanged fires before updateProfile finishes, so refresh
+      // the header with the real name now that it's set.
+      $("userMenuName").textContent = name.split(" ")[0];
+      $("userAvatar").textContent = name.charAt(0).toUpperCase();
       closeModal("authModalBackdrop");
       e.target.reset();
+      showApp();
+      switchAppPanel("myVehicles");
       toast("Account created — welcome to CarCare+!");
     } catch (err) {
       $("signupError").textContent = friendlyAuthError(err);
+    } finally {
+      setBusy(e.target, false);
     }
   });
 
@@ -2398,13 +2489,24 @@ const GEMINI_MODEL = "gemini-2.5-flash";
       "auth/weak-password": "Password should be at least 6 characters.",
       "auth/user-not-found": "No account found with that email.",
       "auth/wrong-password": "Incorrect password.",
-      "auth/invalid-credential": "Incorrect email or password."
+      "auth/invalid-credential": "Incorrect email or password.",
+      "auth/invalid-login-credentials": "Incorrect email or password.",
+      "auth/missing-password": "Please enter your password.",
+      "auth/missing-email": "Please enter your email address.",
+      "auth/too-many-requests": "Too many attempts — please wait a few minutes and try again, or reset your password.",
+      "auth/network-request-failed": "Network error — check your internet connection and try again.",
+      "auth/user-disabled": "This account has been disabled. Contact support.",
+      "auth/operation-not-allowed": "Email/password sign-in isn't enabled for this app yet (Firebase console → Authentication → Sign-in method).",
+      "auth/unauthorized-domain": "This website's domain isn't authorised in Firebase yet (Firebase console → Authentication → Settings → Authorized domains).",
+      "permission-denied": "Your account was created, but saving your profile was blocked by the database rules. Please contact support."
     };
     return map[err.code] || err.message;
   }
 
   $("logoutBtn").addEventListener("click", async () => {
     await auth.signOut();
+    showMarketing();
+    window.scrollTo({ top: 0 });
     $("userMenu").classList.remove("open");
     toast("Logged out");
   });
@@ -2467,7 +2569,11 @@ const GEMINI_MODEL = "gemini-2.5-flash";
     if (panel) panel.hidden = false;
 
     if (panelKey === "myBills") renderMyBillGrid();
-    if (panelKey === "diagnosis") renderMyDiagHistory();
+    if (panelKey === "diagnosis") {
+      const ok = populateVehicleSelect("dVehicle", $("dVehicle").value || state.selectedVehicleId);
+      $("diagError").textContent = ok ? "" : "Add a vehicle in \u201cMy Vehicles\u201d before running an AI diagnosis.";
+      renderMyDiagHistory();
+    }
     if (panelKey === "maintenance") renderMyMaintList();
     if (panelKey === "adminOverview") loadAdminOverview();
     if (panelKey === "adminUsers") loadAdminUsers();
@@ -2531,11 +2637,46 @@ const GEMINI_MODEL = "gemini-2.5-flash";
   $("openAddVehicle").addEventListener("click", () => openVehicleModal());
   $("openAddVehicleEmpty").addEventListener("click", () => openVehicleModal());
 
-  function openVehicleModal() {
+  let editingVehicleId = null;
+  function openVehicleModal(vehicle) {
     $("vehicleForm").reset();
     $("vehicleError").textContent = "";
+    editingVehicleId = vehicle ? vehicle.id : null;
+    $("vehicleModalTitle").textContent = vehicle ? "Edit Vehicle" : "Add Vehicle";
+    if (vehicle) {
+      $("vMake").value = vehicle.make || "";
+      $("vModel").value = vehicle.model || "";
+      $("vYear").value = vehicle.year || "";
+      $("vPlate").value = vehicle.plate || "";
+      $("vMileage").value = vehicle.mileage || 0;
+    }
     openModal("vehicleModalBackdrop");
   }
+
+  $("editVehicleBtn").addEventListener("click", () => {
+    const v = state.vehicles.find(x => x.id === state.selectedVehicleId);
+    if (v) openVehicleModal(v);
+  });
+
+  $("deleteVehicleBtn").addEventListener("click", async () => {
+    const v = state.vehicles.find(x => x.id === state.selectedVehicleId);
+    if (!v || !state.user) return;
+    if (!confirm(`Delete ${v.make} ${v.model} (${v.plate}) and all its service records, bills, diagnoses and maintenance items? This can't be undone.`)) return;
+    try {
+      const uid = state.user.uid;
+      const related = ["serviceRecords", "bills", "diagnoses", "maintenanceItems", "reportedPrices"];
+      for (const col of related) {
+        const snap = await db.collection(col).where("ownerId", "==", uid).where("vehicleId", "==", v.id).get();
+        await Promise.all(snap.docs.map(d => d.ref.delete()));
+      }
+      await db.collection("vehicles").doc(v.id).delete();
+      state.selectedVehicleId = null;
+      switchAppPanel("myVehicles");
+      toast("Vehicle deleted");
+    } catch (err) {
+      toast(err.message, true);
+    }
+  });
 
   $("vehicleForm").addEventListener("submit", async (e) => {
     e.preventDefault();
@@ -2545,16 +2686,25 @@ const GEMINI_MODEL = "gemini-2.5-flash";
       make: $("vMake").value.trim(),
       model: $("vModel").value.trim(),
       year: Number($("vYear").value),
-      plate: $("vPlate").value.trim(),
-      mileage: Number($("vMileage").value),
-      createdAt: firebase.firestore.FieldValue.serverTimestamp()
+      plate: $("vPlate").value.trim().toUpperCase(),
+      mileage: Number($("vMileage").value)
     };
+    setBusy(e.target, true, "Saving\u2026");
     try {
-      await db.collection("vehicles").add(payload);
-      closeModal("vehicleModalBackdrop");
-      toast("Vehicle added");
+      if (editingVehicleId) {
+        await db.collection("vehicles").doc(editingVehicleId).update(payload);
+        closeModal("vehicleModalBackdrop");
+        toast("Vehicle updated");
+      } else {
+        payload.createdAt = firebase.firestore.FieldValue.serverTimestamp();
+        await db.collection("vehicles").add(payload);
+        closeModal("vehicleModalBackdrop");
+        toast("Vehicle added");
+      }
     } catch (err) {
       $("vehicleError").textContent = err.message;
+    } finally {
+      setBusy(e.target, false);
     }
   });
 
@@ -2562,8 +2712,11 @@ const GEMINI_MODEL = "gemini-2.5-flash";
     state.unsub.vehicles = db.collection("vehicles")
       .where("ownerId", "==", uid)
       .onSnapshot((snap) => {
-        state.vehicles = snap.docs.map(d => ({ id: d.id, ...d.data() }));
+        state.vehicles = snap.docs.map(d => ({ id: d.id, ...d.data() }))
+          .sort((a, b) => (a.createdAt?.seconds || 0) - (b.createdAt?.seconds || 0));
         renderVehicleGrid();
+        if (!$("panel-vehicleDetail").hidden && state.selectedVehicleId) renderVehicleDetailHead(state.selectedVehicleId);
+        if (!$("panel-maintenance").hidden) renderMyMaintList();
       }, (err) => console.error("vehicles listener error:", err));
   }
 
@@ -2604,26 +2757,38 @@ const GEMINI_MODEL = "gemini-2.5-flash";
 
     document.querySelectorAll(".app-panel").forEach(p => p.hidden = true);
     $("panel-vehicleDetail").hidden = false;
+    document.querySelectorAll(".app-nav-btn").forEach(b => b.classList.toggle("active", b.dataset.panel === "myVehicles"));
+    renderVehicleDetailHead(vehicleId);
 
+    if (state.unsub.services) state.unsub.services();
+    // Firestore rules only let a user read records they own, and rules are
+    // not filters: the query itself must include ownerId or it's rejected.
+    state.unsub.services = db.collection("serviceRecords")
+      .where("ownerId", "==", state.user.uid)
+      .where("vehicleId", "==", vehicleId)
+      .onSnapshot((snap) => {
+        const records = snap.docs.map(d => ({ id: d.id, ...d.data() }))
+          .sort((a, b) => (b.date || "").localeCompare(a.date || ""));
+        renderServiceTable(records);
+      }, (err) => {
+        console.error("services listener error:", err);
+        $("serviceTableBody").innerHTML = `<tr class="loading-row"><td colspan="6">Couldn't load service history (${esc(err.code || err.message)}).</td></tr>`;
+      });
+
+    renderVehicleBillGrid(vehicleId);
+    renderVehicleDiagHistory(vehicleId);
+    renderVehicleMaintList(vehicleId);
+  }
+
+  function renderVehicleDetailHead(vehicleId) {
+    const v = state.vehicles.find(x => x.id === vehicleId);
+    if (!v) return;
     $("vehicleDetailHead").innerHTML = `
       <div>
         <h3>${esc(v.make)} ${esc(v.model)} (${esc(v.year)})</h3>
         <p>${esc(v.plate)} &middot; ${Number(v.mileage || 0).toLocaleString("en-IN")} km on the odometer</p>
       </div>
     `;
-
-    if (state.unsub.services) state.unsub.services();
-    state.unsub.services = db.collection("serviceRecords")
-      .where("vehicleId", "==", vehicleId)
-      .onSnapshot((snap) => {
-        const records = snap.docs.map(d => ({ id: d.id, ...d.data() }))
-          .sort((a, b) => (b.date || "").localeCompare(a.date || ""));
-        renderServiceTable(records);
-      }, (err) => console.error("services listener error:", err));
-
-    renderVehicleBillGrid(vehicleId);
-    renderVehicleDiagHistory(vehicleId);
-    renderVehicleMaintList(vehicleId);
   }
 
   function renderServiceTable(records) {
@@ -2659,6 +2824,9 @@ const GEMINI_MODEL = "gemini-2.5-flash";
   $("openAddService").addEventListener("click", () => {
     $("serviceForm").reset();
     $("serviceError").textContent = "";
+    $("sDate").value = new Date().toISOString().slice(0, 10);
+    const v = state.vehicles.find(x => x.id === state.selectedVehicleId);
+    if (v) $("sMileage").value = v.mileage || 0;
     openModal("serviceModalBackdrop");
   });
 
@@ -2677,6 +2845,12 @@ const GEMINI_MODEL = "gemini-2.5-flash";
     };
     try {
       await db.collection("serviceRecords").add(payload);
+      // Keep the vehicle's odometer current if this service was logged at a
+      // higher reading — maintenance due-dates are calculated from it.
+      const v = state.vehicles.find(x => x.id === payload.vehicleId);
+      if (v && payload.mileageAtService > Number(v.mileage || 0)) {
+        await db.collection("vehicles").doc(v.id).update({ mileage: payload.mileageAtService });
+      }
       closeModal("serviceModalBackdrop");
       toast("Service logged");
     } catch (err) {
